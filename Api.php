@@ -9,6 +9,7 @@ class Api
     public $action;
     public $loyaltyProgram;
     public $cardNumberType;
+    public $sumBonus;
     public $db;
 
     public function __construct($config)
@@ -19,6 +20,7 @@ class Api
         $this->connectDb();
         $this->loyaltyProgram = array_search(true, $config['loyalty_program'], true);
         $this->cardNumberType = array_search(true, $config['card_number_type'], true);
+        $this->sumBonus = array_reverse($config['sum_bonus'], true);
     }
 
     public function connectDb()
@@ -28,6 +30,7 @@ class Api
         $password = '123';
         $db = 'bonus_service';
         $options = array(
+            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
             PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
         );
 
