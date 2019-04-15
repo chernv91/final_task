@@ -16,6 +16,8 @@ class UserApi extends Api
             echo 'Ошибка; ' . $e->getMessage();
         }
 
+        //$this->userApiKey =
+
         return count($data->fetchAll()) === 1 ? 'Связь установлена' : 'Ошибка авторизации';
     }
 

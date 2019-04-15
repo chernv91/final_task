@@ -11,6 +11,7 @@ class Api
     public $cardNumberType;
     public $sumBonus;
     public $db;
+    public $userApiKey = '';
 
     public function __construct($config)
     {
@@ -47,16 +48,16 @@ class Api
         $action = null;
         switch ($this->requestMethod) {
             case 'GET':
-                $action = 'find';
+                $action = 'get';
                 break;
             case 'PUT':
-                $action = 'edit';
+                $action = 'update';
                 break;
             case 'DELETE':
                 $action = 'delete';
                 break;
             case 'POST':
-                $action = 'add';
+                $action = 'create';
                 break;
         }
         return $action;

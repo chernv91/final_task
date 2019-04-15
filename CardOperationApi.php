@@ -2,7 +2,7 @@
 
 require_once 'Api.php';
 
-class qCardOperationApi extends Api
+class CardOperationApi extends Api
 {
     private function getCardOperation()
     {
