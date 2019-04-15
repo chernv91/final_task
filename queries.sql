@@ -7,31 +7,11 @@ DROP TABLE IF EXISTS user;
 
 CREATE TABLE IF NOT EXISTS user
 (
-    api_key    CHAR(50)                      NOT NULL,
+    api_key    CHAR(32)                      NOT NULL UNIQUE,
     first_name VARCHAR(30)                   NOT NULL,
     last_name  VARCHAR(30)                   NOT NULL,
     role       ENUM ('Оператор', 'Менеджер') NOT NULL,
     PRIMARY KEY (api_key)
-);
-
-DROP TABLE IF EXISTS loyalty_program;
-
-CREATE TABLE IF NOT EXISTS loyalty_program
-(
-    id        TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
-    name      VARCHAR(45)      NOT NULL,
-    is_chosen BOOL             NOT NULL,
-    PRIMARY KEY (id)
-);
-
-DROP TABLE IF EXISTS card_number;
-
-CREATE TABLE IF NOT EXISTS card_number
-(
-    id        TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
-    name      VARCHAR(45)      NOT NULL,
-    is_chosen BOOL             NOT NULL,
-    PRIMARY KEY (id)
 );
 
 DROP TABLE IF EXISTS client;
@@ -69,7 +49,7 @@ CREATE TABLE IF NOT EXISTS card_operation
     client_id    SMALLINT UNSIGNED NOT NULL,
     old_value    VARCHAR(30)       NULL,
     new_value    VARCHAR(30)       NULL,
-    user_api_key CHAR(50)          NOT NULL,
+    user_api_key CHAR(32)          NOT NULL,
     PRIMARY KEY (id),
     FOREIGN KEY (user_api_key)
         REFERENCES user (api_key)
@@ -80,3 +60,15 @@ CREATE TABLE IF NOT EXISTS card_operation
         ON DELETE CASCADE
         ON UPDATE CASCADE
 );
+
+DROP TABLE IF EXISTS holiday;
+
+CREATE TABLE IF NOT EXISTS holiday
+(
+    id   SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
+    name VARCHAR(45)       NOT NULL,
+    date DATE              NOT NULL,
+    PRIMARY KEY (id)
+);
+
+INSERT INTO user(api_key, first_name, last_name, role) VALUE ('5550d565b6f28a76f1c94ff87e8d9cd9', ' Валерия', 'Чернякова', 1);

@@ -1,17 +1,24 @@
 <?php
 
+require_once 'config.php';
+
 class Api
 {
     public $requestUri;
     public $requestMethod;
     public $action;
-    protected $db;
+    public $loyaltyProgram;
+    public $cardNumberType;
+    public $db;
 
-    public function __construct()
+    public function __construct($config)
     {
-        $this->requestUri = $_SERVER['REQUEST_URI'];
-        $this->requestMethod = $_SERVER['REQUEST_METHOD'];
+        //$this->requestUri = $_SERVER['REQUEST_URI'];
+        //$this->requestMethod = $_SERVER['REQUEST_METHOD'];
         $this->action = $this->getAction();
+        $this->connectDb();
+        $this->loyaltyProgram = array_search(true, $config['loyalty_program'], true);
+        $this->cardNumberType = array_search(true, $config['card_number_type'], true);
     }
 
     public function connectDb()
@@ -20,10 +27,13 @@ class Api
         $user = 'user';
         $password = '123';
         $db = 'bonus_service';
+        $options = array(
+            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
+        );
 
-        $dsn = "mysql:host=$host;dbname=$db";
+        $dsn = "mysql:host=$host;dbname=$db;charset=utf8";
         try {
-            $this->db = new PDO($dsn, $user, $password);
+            $this->db = new PDO($dsn, $user, $password, $options);
         } catch (PDOException $e) {
             echo 'Подключение не удалось; ' . $e->getMessage();
         }
@@ -49,3 +59,6 @@ class Api
         return $action;
     }
 }
+
+$api = new Api($config);
+$api->connectDb();

@@ -26,3 +26,6 @@
 //curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 //$response  = curl_exec($ch);
 //curl_close($ch);
+
+$better_token = md5(uniqid(rand(),1));
+echo $better_token;
