@@ -65,8 +65,8 @@ class UserApi extends Api
     }
 }
 /*
-$api = new Api($config);
-$user_api = new UserApi($config);
+$api = new Api();
+$user_api = new UserApi();
 //var_dump($user_api->getUser('5550d565b6f28a76f1c94ff87e8d9cd9'));
 //var_dump($user_api->deleteUser('9828a24b71c7d916ba97b267730ab57a'));
 var_dump($user_api->createUser('7828a24b71c7d916ba97b267730ab57a', 'Ирина', 'Чернякова', 1));*/

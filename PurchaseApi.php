@@ -132,6 +132,6 @@ class PurchaseApi extends Api
     }
 }
 
-$calc = new PurchaseApi($config);
+$calc = new PurchaseApi();
 echo $calc->getBonuses(1000, 2);
 

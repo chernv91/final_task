@@ -94,13 +94,11 @@ class ClientApi extends Api
         } catch (PDOException $e) {
             echo 'Ошибка; ' . $e->getMessage();
         }
-        //убрать
-        $config = [];
         //Выпуск карты
         if (array_key_exists('card_number', $params)) {
             $client_id = (int)$this->db->lastInsertId();
             $user_api_key = '7828a24b71c7d916ba97b267730ab57a';
-            $card_operation = new CardOperationApi($config);
+            $card_operation = new CardOperationApi();
 
             try {
                 $card_operation->createCardOperation('Выпуск карты', $client_id, $user_api_key);
@@ -128,8 +126,8 @@ class ClientApi extends Api
     }
 }
 
-/*$api = new Api($config);
-$client_api = new ClientApi($config);
+/*$api = new Api();
+$client_api = new ClientApi();
 $client_api->createClient();
 print_r($client_api->getClient());
 //var_dump($user_api->getUser('5550d565b6f28a76f1c94ff87e8d9cd9'));

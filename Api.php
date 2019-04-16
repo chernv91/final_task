@@ -1,6 +1,5 @@
 <?php
 
-require_once 'config.php';
 require_once 'UserApi.php';
 
 class Api
@@ -19,8 +18,12 @@ class Api
     public $objMethodName;
     public $config;
 
-    public function __construct($config)
+    public function __construct()
     {
+        require_once 'config.php';
+        global $config;
+        $this->config = $config;
+        unset($config);
         //header("Content-Type: application/json");
         //header ("Content-Disposition: inline; filename = ajax.json");
 
@@ -31,9 +34,9 @@ class Api
         $this->requestParams = $_REQUEST;
         $this->action = $this->getAction();
         $this->connectDb();
-        $this->loyaltyProgram = array_search(true, $config['loyalty_program'], true);
-        $this->cardNumberType = array_search(true, $config['card_number_type'], true);
-        $this->sumBonus = array_reverse($config['sum_bonus'], true);
+        $this->loyaltyProgram = array_search(true, $this->config['loyalty_program'], true);
+        $this->cardNumberType = array_search(true, $this->config['card_number_type'], true);
+        $this->sumBonus = array_reverse($this->config['sum_bonus'], true);
         //if (array_shift($this->requestUri) !== 'api' || !in_array(array_shift($this->requestUri), $this->routers,
                // true)) {
             /*//throw new Exception('API Not Found', 404);
@@ -97,5 +100,5 @@ class Api
     }
 }
 
-$api = new Api($config);
+$api = new Api();
 $api->connectDb();
