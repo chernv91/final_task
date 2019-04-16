@@ -17,10 +17,11 @@ class Api
     private $routers = ['users', 'clients'];
     public $objName;
     public $objMethodName;
+    public $config;
 
     public function __construct($config)
     {
-        header("Content-Type: application/json");
+        //header("Content-Type: application/json");
         //header ("Content-Disposition: inline; filename = ajax.json");
 
         $this->requestUri = explode('/', trim($_SERVER['REQUEST_URI'], '/'));
@@ -95,6 +96,6 @@ class Api
         return $action;
     }
 }
-/*
+
 $api = new Api($config);
-$api->connectDb();*/
+$api->connectDb();
