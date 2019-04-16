@@ -1,24 +1,31 @@
 <?php
 
 require_once 'Api.php';
+require_once 'config.php';
 
 class UserApi extends Api
 {
-    public function getUser($api_key)
+    public function getUser()
     {
-        $sql = "SELECT first_name, last_name, role FROM user WHERE api_key =:api_key";
+        if (!empty($_SERVER['PHP_AUTH_PW'])) {
+            $apiKey = $_SERVER['PHP_AUTH_PW'];
+        }
+
+        $sql = "SELECT first_name, last_name, role FROM user WHERE api_key =:apiKey";
         $data = $this->db->prepare($sql);
-        $data->bindParam(':api_key', $api_key, PDO::PARAM_STR);
+        $data->bindParam(':apiKey', $apiKey, PDO::PARAM_STR);
 
         try {
             $data->execute();
         } catch (PDOException $e) {
             echo 'Ошибка; ' . $e->getMessage();
         }
-
+        //записать его куда-то
         //$this->userApiKey =
 
-        return count($data->fetchAll()) === 1 ? 'Связь установлена' : 'Ошибка авторизации';
+        $message = count($data->fetchAll()) === 1 ? 'Связь установлена' : 'Ошибка авторизации';
+
+        return json_encode(['message' => $message]);
     }
 
     private function updateUser()
@@ -57,9 +64,9 @@ class UserApi extends Api
         return 'Пользователь удален';
     }
 }
-
-$api = new Api();
-$user_api = new UserApi();
+/*
+$api = new Api($config);
+$user_api = new UserApi($config);
 //var_dump($user_api->getUser('5550d565b6f28a76f1c94ff87e8d9cd9'));
 //var_dump($user_api->deleteUser('9828a24b71c7d916ba97b267730ab57a'));
-var_dump($user_api->createUser('7828a24b71c7d916ba97b267730ab57a', 'Ирина', 'Чернякова', 1));
+var_dump($user_api->createUser('7828a24b71c7d916ba97b267730ab57a', 'Ирина', 'Чернякова', 1));*/

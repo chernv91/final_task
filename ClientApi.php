@@ -2,24 +2,27 @@
 
 require_once 'Api.php';
 require_once 'CardOperationApi.php';
+require_once 'config.php';
 
 class ClientApi extends Api
 {
-    public function getClient($card_number)
+    public function getClient()
     {
+        $cardNumber = array_pop($this->requestUri);
+
         $loyaltyProgramField = 'discount' === $this->loyaltyProgram ? 'discount' : 'bonus_balance';
         $cardNumberField = 'phone' === $this->cardNumberType ? 'phone' : 'card_number';
 
 
         if ('phone' === $cardNumberField) {
-            $phone = $card_number;
+            $phone = $cardNumber;
             $sql = "SELECT $loyaltyProgramField FROM client WHERE $cardNumberField = :phone";
             $data = $this->db->prepare($sql);
             $data->bindParam(':phone', $phone, PDO::PARAM_INT);
         } else {
-            $sql = "SELECT $loyaltyProgramField FROM client WHERE $cardNumberField = :card_number";
+            $sql = "SELECT $loyaltyProgramField FROM client WHERE $cardNumberField = :cardNumber";
             $data = $this->db->prepare($sql);
-            $data->bindParam(':card_number', $card_number, PDO::PARAM_INT);
+            $data->bindParam(':cardNumber', $cardNumber, PDO::PARAM_INT);
         }
 
         try {
@@ -28,7 +31,9 @@ class ClientApi extends Api
             echo 'Ошибка; ' . $e->getMessage();
         }
 
-        return $data->fetchAll();
+        $value = $data->fetchAll()[0][$loyaltyProgramField];
+
+        return json_encode([$loyaltyProgramField => $value]);
     }
 
     public function updateClient($id, $params = ['bonus_balance' => 200, 'total_sum' => 1000.25])
@@ -104,10 +109,11 @@ class ClientApi extends Api
     }
 }
 
-$api = new Api($config);
+/*$api = new Api($config);
 $client_api = new ClientApi($config);
+print_r($client_api->getClient());
 //var_dump($user_api->getUser('5550d565b6f28a76f1c94ff87e8d9cd9'));
 //var_dump($user_api->deleteUser('9828a24b71c7d916ba97b267730ab57a'));
 //var_dump($client_api->createClient('Степан', 'Иванович', 'Иванов', '1966-03-09', 79787951471, 126, 8));
 //var_dump($client_api->getClient('79787951475'));
-var_dump($client_api->updateClient(2));
+var_dump($client_api->updateClient(2));*/

@@ -7,7 +7,7 @@
 <form action="post.php">
     <input type="submit">POST
 </form>
-<form action="put.php" method="POST">
+<form action="" method="POST">
     Имя: <input type="text" name="first_name"><br>
     Отчество: <input type="text" name="middle_name"><br>
     Фамилия: <input type="text" name="last_name"><br>
