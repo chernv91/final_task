@@ -48,7 +48,8 @@ class ClientApi extends Api
             $params[$param[0]] = $param[1];
         }
 
-        if (array_key_exists('operation', $params) && 'add_bonuses' === $params['operation']) {
+        if (array_key_exists('operation',
+                $params) && ('add_bonuses' === $params['operation'] || 'subtract_bonuses' === $params['operation'])) {
             $sql = "UPDATE client SET bonus_balance = :bonusBalance,  total_sum = :totalSum WHERE id = :id";
             $data = $this->db->prepare($sql);
 

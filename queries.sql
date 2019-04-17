@@ -25,10 +25,10 @@ CREATE TABLE IF NOT EXISTS client
     birthday      DATE                              NOT NULL,
     phone         BIGINT UNSIGNED                   NOT NULL,
     card_number   SMALLINT(5) UNSIGNED ZEROFILL     NULL UNIQUE,
-    card_status   ENUM ('Активна', 'Заблокирована') NULL,
-    bonus_balance DECIMAL(5, 2) UNSIGNED            NULL,
+    card_status   ENUM ('Активна', 'Заблокирована') NULL DEFAULT '1',
+    bonus_balance DECIMAL(5, 2) UNSIGNED            NULL DEFAULT 0,
     discount      DECIMAL(3, 1) UNSIGNED            NULL,
-    total_sum     DECIMAL(7, 2) UNSIGNED            NULL,
+    total_sum     DECIMAL(7, 2) UNSIGNED            NULL DEFAULT 0,
     PRIMARY KEY (id)
 );
 

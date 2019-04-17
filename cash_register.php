@@ -46,14 +46,16 @@
 <form action="" method="POST" id="sale">
     <p>Сумма покупки:</p>
     <input type="text" id="purchase_sum">
+    <p>Максимально возможная сумма для оплаты бонусами - <span id="max_possible_sum"></span> руб</p>
     <p>Количество бонусов к списанию:</p>
-    <input type="text" id="bonus_amount">
+    <input type="text" id="bonuses_for_subtract">
     <input type="button" id="subtract_bonuses" value="Списать бонусы"><br>
     <input type="button" id="create_purchase" value="Оформить покупку"><br>
 </form>
 <form action="" id="hidden_params">
     <input type="hidden" id="client_id" value="">
     <input type="hidden" id="total_sum" value="">
+    <input type="hidden" id="subtract_bonuses" value="false">
 </form>
 </body>
 </html>

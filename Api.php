@@ -58,7 +58,7 @@ class Api
 
         if ('CalculatorApi' === $this->objName) {
             $param = $this->requestUri[3];
-            $this->objMethodName = $param === 'bonuses' ? 'getBonuses' : 'getTotalSum';
+            $this->objMethodName = $param === 'bonuses' ? 'getBonuses' : 'getMaxPossibleBonusesSum';
         } else {
             $this->objMethodName = $this->action . $obj_name;
         }

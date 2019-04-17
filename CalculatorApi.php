@@ -111,6 +111,18 @@ class CalculatorApi extends Api
 
         return $today === $birthday;
     }
+
+    public function getMaxPossibleBonusesSum()
+    {
+        $purchase_sum = array_pop($this->requestUri);
+        $max_percent = $this->config['bonus_payment_percent'];
+        return $this->calculateMaxPossibleBonusesSum($purchase_sum, $max_percent);
+    }
+
+    protected function calculateMaxPossibleBonusesSum($purchase_sum, $max_percent)
+    {
+        return $purchase_sum * $max_percent / 100;
+    }
 }
 /*
 $calc = new CalculatorApi();
