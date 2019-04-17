@@ -4,7 +4,7 @@ require_once 'Api.php';
 require_once 'ClientApi.php';
 require_once 'CardOperationApi.php';
 
-class PurchaseApi extends Api
+class CalculatorApi extends Api
 {
     //protected $sumBonus;
 
@@ -24,27 +24,25 @@ class PurchaseApi extends Api
 
         $client->updateClient($id, $params);
         //рег-я оборота по карте
-        $cardOperation->createCardOperation(4, $id, $user_api_key='5550d565b6f28a76f1c94ff87e8d9cd9');
+        $cardOperation->createCardOperation(4, $id, $user_api_key = '5550d565b6f28a76f1c94ff87e8d9cd9');
         if ('subrtact_bonuses' === $operation) {
-            $cardOperation->createCardOperation(1, $id, $user_api_key='5550d565b6f28a76f1c94ff87e8d9cd9');
+            $cardOperation->createCardOperation(1, $id, $user_api_key = '5550d565b6f28a76f1c94ff87e8d9cd9');
         } elseif ('add_bonuses' === $operation) {
-            $cardOperation->createCardOperation(2, $id, $user_api_key='5550d565b6f28a76f1c94ff87e8d9cd9');
+            $cardOperation->createCardOperation(2, $id, $user_api_key = '5550d565b6f28a76f1c94ff87e8d9cd9');
         }
     }
 
-    public function getBonuses($operation, $subtracted_bonuses, $purchase_sum, $id)
+    public function getBonuses()
     {
-        return $this->calculateBonuses($operation, $subtracted_bonuses, $purchase_sum, $id);
+        $purchase_sum = array_pop($this->requestUri);
+        $id = array_pop($this->requestUri);
+
+        return $this->calculateBonuses($id, $purchase_sum);
     }
 
-    public function getTotalSum($purchase_sum, $id)
+    protected function calculateBonuses($id, $purchase_sum)
     {
-        return $this->calculateTotalSum($purchase_sum, $id);
-    }
-
-    protected function calculateBonuses($operation, $subtracted_bonuses, $purchase_sum, $id)
-    {
-        if ('subrtact_bonuses' === $operation) {
+        /*if ('subrtact_bonuses' === $operation) {
             $sql = "SELECT bonus_balance FROM client WHERE id=:id";
             $data = $this->db->prepare($sql);
             $data->bindParam(':id', $id);
@@ -56,43 +54,26 @@ class PurchaseApi extends Api
             }
             $oldBonusBalance = $data->fetchAll()[0]['bonus_balance'];
             $bonuses = $oldBonusBalance - $subtracted_bonuses;
-        } elseif ('add_bonuses' === $operation) {
-            $bonuses = 0;
-            foreach ($this->sumBonus as $sum => $bonus) {
-                if ($purchase_sum > $sum) {
-                    $bonuses = $bonus;
-                    break;
-                }
-            }
-
-            $isHoliday = $this->checkIsHoliday();
-            $isBirthday = $this->checkIsBirthday($id);
-            //var_dump($isHoliday);
-            //var_dump($isBirthday);
-
-            if ($isHoliday || $isBirthday) {
-                $bonuses *= 2;
+        } elseif ('add_bonuses' === $operation) {*/
+        $bonuses = 0;
+        foreach ($this->sumBonus as $sum => $bonus) {
+            if ($purchase_sum > $sum) {
+                $bonuses = $bonus;
+                break;
             }
         }
+
+        $isHoliday = $this->checkIsHoliday();
+        $isBirthday = $this->checkIsBirthday($id);
+        //var_dump($isHoliday);
+        //var_dump($isBirthday);
+
+        if ($isHoliday || $isBirthday) {
+            $bonuses *= 2;
+        }
+        //}
 
         return $bonuses;
-    }
-
-    protected function calculateTotalSum($purchase_sum, $id)
-    {
-        $sql = "SELECT total_sum FROM client WHERE id=:id";
-        $data = $this->db->prepare($sql);
-        $data->bindParam(':id', $id);
-        try {
-            $data->execute();
-        } catch (PDOException $e) {
-            echo 'Ошибка: ' . $e->getMessage() . "\n";
-            exit();
-        }
-        $oldTotalSum = $data->fetchAll()[0]['total_sum'];
-        $newTotalSum = $oldTotalSum + $purchase_sum;
-
-        return $newTotalSum;
     }
 
     protected function checkIsHoliday(): bool
@@ -131,7 +112,7 @@ class PurchaseApi extends Api
         return $today === $birthday;
     }
 }
-
-$calc = new PurchaseApi();
-echo $calc->getBonuses(1000, 2);
+/*
+$calc = new CalculatorApi();
+echo $calc->getBonuses(1000, 2);*/
 

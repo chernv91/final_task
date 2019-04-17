@@ -8,15 +8,39 @@ class CardOperationApi extends Api
     {
     }
 
-    public function createCardOperation($name, $client_id, $user_api_key, $old_value='', $new_value='')
+    public function createCardOperation()
     {
-        $sql = "INSERT INTO card_operation(name, client_id, user_api_key, old_value, new_value) VALUE(:name, :client_id, :user_api_key, :old_value, :new_value)";
+        $user_api_key = '7828a24b71c7d916ba97b267730ab57a';
+        $sql = "INSERT INTO card_operation(user_api_key, ";
+
+        $params = [];
+        foreach ($_POST as $key => $value) {
+            if (!empty($value)) {
+                $params[$key] = $value;
+                $sql .= $key . ', ';
+            }
+        }
+
+        $sql = substr($sql, 0, -2) . ') VALUE(:user_api_key, ';
+
+        foreach ($params as $key => $value) {
+            $sql .= ":$key, ";
+        }
+
+        $sql = substr($sql, 0, -2) . ')';
+        file_put_contents('16.txt', $sql);
         $data = $this->db->prepare($sql);
-        $data->bindParam(':name', $name);
-        $data->bindParam(':client_id', $client_id, PDO::PARAM_INT);
+
+        foreach ($params as $key => $value) {
+            //перепроверить
+            if (is_numeric($key)) {
+                $data->bindParam(":$key", $params[$key], PDO::PARAM_INT);
+            } else {
+                $data->bindParam(":$key", $params[$key]);
+            }
+
+        }
         $data->bindParam(':user_api_key', $user_api_key);
-        $data->bindParam(':old_value', $old_value);
-        $data->bindParam(':new_value', $new_value);
         try {
             $data->execute();
         } catch (PDOException $e) {

@@ -15,7 +15,7 @@
 </head>
 <body>
 <h3>Форма поиска клиента</h3>
-<form action="" method="GET" id="find">
+<form action=""  id="find">
     <p>Введите номер карты клиента:</p>
     <input type="text" id="card_number" size="15">
     <input type="button" id="get_client" value="ОК">
@@ -45,11 +45,15 @@
 <h3>Форма продажи товара</h3>
 <form action="" method="POST" id="sale">
     <p>Сумма покупки:</p>
-    <input type="text" id="sum">
+    <input type="text" id="purchase_sum">
     <p>Количество бонусов к списанию:</p>
     <input type="text" id="bonus_amount">
     <input type="button" id="subtract_bonuses" value="Списать бонусы"><br>
     <input type="button" id="create_purchase" value="Оформить покупку"><br>
+</form>
+<form action="" id="hidden_params">
+    <input type="hidden" id="client_id" value="">
+    <input type="hidden" id="total_sum" value="">
 </form>
 </body>
 </html>

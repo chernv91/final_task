@@ -14,11 +14,11 @@ class ClientApi extends Api
 
         if ('phone' === $cardNumberField) {
             $phone = $cardNumber;
-            $sql = "SELECT $loyaltyProgramField FROM client WHERE $cardNumberField = :phone";
+            $sql = "SELECT id, $loyaltyProgramField, total_sum FROM client WHERE $cardNumberField = :phone";
             $data = $this->db->prepare($sql);
             $data->bindParam(':phone', $phone, PDO::PARAM_INT);
         } else {
-            $sql = "SELECT $loyaltyProgramField FROM client WHERE $cardNumberField = :cardNumber";
+            $sql = "SELECT id, $loyaltyProgramField, total_sum FROM client WHERE $cardNumberField = :cardNumber";
             $data = $this->db->prepare($sql);
             $data->bindParam(':cardNumber', $cardNumber, PDO::PARAM_INT);
         }
@@ -29,14 +29,36 @@ class ClientApi extends Api
             echo 'Ошибка; ' . $e->getMessage();
         }
 
-        $value = $data->fetchAll()[0][$loyaltyProgramField];
+        $result = $data->fetchAll();
+        $id = $result[0]['id'];
+        $value = $result[0][$loyaltyProgramField];
+        $totalSum = $result[0]['total_sum'];
 
-        return json_encode([$loyaltyProgramField => $value]);
+        return json_encode(['id' => $id, $loyaltyProgramField => $value, 'total_sum' => $totalSum]);
     }
 
-    public function updateClient($id, $params = ['bonus_balance' => 200, 'total_sum' => 1000.25])
+    //public function updateClient($params = ['bonus_balance' => 200, 'total_sum' => 1000.25])
+    public function updateClient()
     {
-        $sql = 'UPDATE client SET ';
+        $input = explode('&', file_get_contents('php://input'));
+        $params = [];
+
+        foreach ($input as $param) {
+            $param = explode('=', $param);
+            $params[$param[0]] = $param[1];
+        }
+
+        if (array_key_exists('operation', $params) && 'add_bonuses' === $params['operation']) {
+            $sql = "UPDATE client SET bonus_balance = :bonusBalance,  total_sum = :totalSum WHERE id = :id";
+            $data = $this->db->prepare($sql);
+
+            $data->bindParam(':bonusBalance', $params['bonus_balance']);
+            $data->bindParam(':totalSum', $params['total_sum']);
+            $data->bindParam(':id', $params['id']);
+        }
+
+
+        /*$sql = 'UPDATE client SET ';
 
         foreach ($params as $key => $value) {
             $sql .= "$key = :$key, ";
@@ -52,7 +74,7 @@ class ClientApi extends Api
         }
 
         $data->bindParam(':id', $id);
-
+*/
         try {
             $data->execute();
         } catch (PDOException $e) {
@@ -81,7 +103,8 @@ class ClientApi extends Api
         $data = $this->db->prepare($sql);
 
         foreach ($params as $key => $value) {
-            if ($key === 'phone' || $key === 'discount' || $key === 'card_number') {
+            //перепроверить
+            if (is_numeric($key)) {
                 $data->bindParam(":$key", $params[$key], PDO::PARAM_INT);
             } else {
                 $data->bindParam(":$key", $params[$key]);
@@ -94,20 +117,10 @@ class ClientApi extends Api
         } catch (PDOException $e) {
             echo 'Ошибка; ' . $e->getMessage();
         }
-        //Выпуск карты
-        if (array_key_exists('card_number', $params)) {
-            $client_id = (int)$this->db->lastInsertId();
-            $user_api_key = '7828a24b71c7d916ba97b267730ab57a';
-            $card_operation = new CardOperationApi();
 
-            try {
-                $card_operation->createCardOperation('Выпуск карты', $client_id, $user_api_key);
-            } catch (Exception $e) {
-                echo $e->getMessage();
-            }
-        }
+        $client_id = (int)$this->db->lastInsertId();
 
-        return 'Клиент успешно добавлен';
+        return $client_id;
     }
 
     public function deleteClient($id)

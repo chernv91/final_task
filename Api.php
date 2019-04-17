@@ -13,7 +13,7 @@ class Api
     public $sumBonus;
     public $db;
     public $userApiKey = '';
-    private $routers = ['users', 'clients'];
+    private $routers = ['users', 'clients', 'card_operations', 'calculators'];
     public $objName;
     public $objMethodName;
     public $config;
@@ -38,19 +38,31 @@ class Api
         $this->cardNumberType = array_search(true, $this->config['card_number_type'], true);
         $this->sumBonus = array_reverse($this->config['sum_bonus'], true);
         //if (array_shift($this->requestUri) !== 'api' || !in_array(array_shift($this->requestUri), $this->routers,
-               // true)) {
-            /*//throw new Exception('API Not Found', 404);
-            //header('HTTP/1.0 400 Bad Request');
-            echo json_encode([
-                'code'    => '400',
-                'message' => 'Bad Request',
-            ]);*/
+        // true)) {
+        /*//throw new Exception('API Not Found', 404);
+        //header('HTTP/1.0 400 Bad Request');
+        echo json_encode([
+            'code'    => '400',
+            'message' => 'Bad Request',
+        ]);*/
 
-       // }
+        // }
         //else {
+        if ('cardoperations' === $this->requestUri[2]) {
+            $obj_name = 'CardOperation';
+        } else {
             $obj_name = ucfirst(substr($this->requestUri[2], 0, -1));
-            $this->objName = $obj_name . 'Api';
+        }
+
+        $this->objName = $obj_name . 'Api';
+
+        if ('CalculatorApi' === $this->objName) {
+            $param = $this->requestUri[3];
+            $this->objMethodName = $param === 'bonuses' ? 'getBonuses' : 'getTotalSum';
+        } else {
             $this->objMethodName = $this->action . $obj_name;
+        }
+
         //}
     }
 
