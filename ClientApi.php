@@ -37,6 +37,27 @@ class ClientApi extends Api
         return json_encode(['id' => $id, $loyaltyProgramField => $value, 'total_sum' => $totalSum]);
     }
 
+    public function getCardsCount()
+    {
+        $cardNumberField = 'phone' === $this->cardNumberType ? 'phone' : 'card_number';
+
+        if ('phone' === $cardNumberField) {
+            $sql = "SELECT COUNT(*) AS cnt from client";
+        } else {
+            $sql = "SELECT COUNT(*) AS cnt from client WHERE card_status = 'Активна'";
+        }
+
+        $data = $this->db->prepare($sql);
+
+        try {
+            $data->execute();
+        } catch (PDOException $e) {
+            echo 'Ошибка; ' . $e->getMessage();
+        }
+
+        return $data->fetchAll()[0]['cnt'];
+    }
+
     //public function updateClient($params = ['bonus_balance' => 200, 'total_sum' => 1000.25])
     public function updateClient()
     {

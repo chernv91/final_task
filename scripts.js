@@ -294,26 +294,79 @@ $(document).ready(function () {
             //dataType: 'json',
             data   : {
                 card_number: cardNumber,
-                discount: newPercent,
+                discount   : newPercent,
                 operation  : 'change_percent'
             },
             success: function (data) {
                 alert(data);
                 $.ajax({
-                    method: 'POST',
-                    url   : 'api/cardoperations/',
+                    method : 'POST',
+                    url    : 'api/cardoperations/',
                     //dataType: 'json',
-                    data  : {
+                    data   : {
                         name     : 'Изменение процента по карте',
                         client_id: id,
                         old_value: oldPercent,
                         new_value: newPercent,
                         //user_ip_key: '',
                     },
-                    success : function (data) {
+                    success: function (data) {
                         alert(data);
                     },
                 });
+            }
+        });
+    });
+
+    $('#subtracted_bonuses_sum').click(function () {
+        $.ajax({
+            url     : 'api/cardoperations/subtracted_bonuses_sum',
+            dataType: 'json',
+            success : function (data) {
+                $('#subtracted_bonuses_res').val(data);
+            }
+        });
+    });
+
+    $('#card_bonuses_sum').click(function () {
+        $.ajax({
+            url     : 'api/cardoperations/card_bonuses_sum',
+            dataType: 'json',
+            success : function (data) {
+                $('#card_bonuses_res').val(data);
+            }
+        });
+    });
+
+    // за период добавить даты
+    $('#card_history').click(function () {
+        let cardNumber = $('#reports #card_number').val();
+        $.ajax({
+            url     : 'api/cardoperations/card_history/' + cardNumber,
+            dataType: 'json',
+            success : function (data) {
+                let html = '<table border="1" cellspacing="0" cellpadding="5">' +
+                    '<th>Наименование операции</th><th>Дата</th><th>Предыдущее значение</th><th>Актуальное значение</th>';
+                for (key in data) {
+                    html += '<tr align="center">';
+                    for (key2 in data[key]) {
+                        html += '<td>' + data[key][key2] + '</td>';
+                    }
+                    html += '</tr>';
+                }
+                html += '</table>';
+                //alert(html);
+                $('#card_history').after(html);
+            }
+        });
+    });
+
+    $('#cards_count').click(function () {
+        $.ajax({
+            url     : 'api/clients/cards_count',
+            //dataType: 'json',
+            success : function (data) {
+                $('#cards_count_res').val(data);
             }
         });
     });

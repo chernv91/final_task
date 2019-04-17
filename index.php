@@ -10,7 +10,7 @@ require_once 'CalculatorApi.php';
     $api = new Api();
     $obj = new $api->objName();
     $result = $obj->{$api->objMethodName}();
-    //file_put_contents('18.txt', $api->objName . ' ' . $api->objMethodName, FILE_APPEND);
+    file_put_contents('18.txt', $api->objName . ' ' . $api->objMethodName, FILE_APPEND);
     print_r($result);
 /*} catch (Exception $e) {
     echo $e->getMessage();

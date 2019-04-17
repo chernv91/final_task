@@ -47,8 +47,8 @@ CREATE TABLE IF NOT EXISTS card_operation
         'Скидка по карте')         NOT NULL,
     datetime     TIMESTAMP         NOT NULL,
     client_id    SMALLINT UNSIGNED NOT NULL,
-    old_value    VARCHAR(30)       NULL,
-    new_value    VARCHAR(30)       NULL,
+    old_value    VARCHAR(30)       NULL DEFAULT '',
+    new_value    VARCHAR(30)       NULL DEFAULT '',
     user_api_key CHAR(32)          NOT NULL,
     PRIMARY KEY (id),
     FOREIGN KEY (user_api_key)

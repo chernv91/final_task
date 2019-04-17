@@ -15,7 +15,7 @@
 </head>
 <body>
 <h3>Форма поиска клиента</h3>
-<form action=""  id="find">
+<form action="" id="find">
     <p>Введите номер карты клиента:</p>
     <input type="text" id="card_number" size="15">
     <input type="button" id="get_client" value="ОК">
@@ -56,6 +56,17 @@
     <input type="text" id="bonuses_for_subtract">
     <input type="button" id="subtract_bonuses" value="Списать бонусы"><br>
     <input type="button" id="create_purchase" value="Оформить покупку"><br>
+</form>
+<h3>Отчеты</h3>
+<form action="" id="reports">
+    <input type="text" id="card_number" placeholder="Введите номер карты"><br>
+    <input type="button" id="card_history" value="Получить выписку по карте"><br>
+    <input type="button" id="cards_count" value="Количество карт"><br>
+    <input type="text" id="cards_count_res" size="10" value=""><br>
+    <input type="button" id="card_bonuses_sum" value="Сумма бонусов на картах"><br>
+    <input type="text" id="card_bonuses_res" size="10" value=""><span> руб</span><br>
+    <input type="button" id="subtracted_bonuses_sum" value="Сумма списанных бонусов"><br>
+    <input type="text" id="subtracted_bonuses_res" size="10" value=""><span> руб</span><br>
 </form>
 <form action="" id="hidden_params">
     <input type="hidden" id="client_id" value="">

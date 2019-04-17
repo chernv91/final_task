@@ -28,4 +28,8 @@
 //curl_close($ch);
 
 $better_token = md5(uniqid(rand(),1));
-echo $better_token;
+//echo $better_token;
+
+$str = "{\"name\":\"\u0412\u044b\u043f\u0443\u0441\u043a \u043a\u0430\u0440\u0442\u044b\",\"datetime\":\"2019-04-15 14:39:39\",\"old_value\":\"\",\"new_value\":\"\"}][{\"name\":\"\u0412\u044b\u043f\u0443\u0441\u043a \u043a\u0430\u0440\u0442\u044b\",\"datetime\":\"2019-04-15 14:39:39\",\"old_value\":\"\",\"new_value\":\"\"}";
+print_r(json_decode($str));
+//echo $str;

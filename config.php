@@ -6,8 +6,8 @@ $config = [
         'bonus_type2' => false,
     ],
     'card_number_type'      => [
-        'phone'       => true,
-        'card_number' => false,
+        'phone'       => false,
+        'card_number' => true,
     ],
     'bonus_payment_percent' => '50',
     'sum_bonus'             => [

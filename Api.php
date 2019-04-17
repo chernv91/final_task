@@ -24,7 +24,7 @@ class Api
         global $config;
         $this->config = $config;
         unset($config);
-        //header("Content-Type: application/json");
+        header("Content-Type: application/json");
         //header ("Content-Disposition: inline; filename = ajax.json");
 
         $this->requestUri = explode('/', trim($_SERVER['REQUEST_URI'], '/'));
@@ -48,6 +48,7 @@ class Api
 
         // }
         //else {
+        //разбить по _
         if ('cardoperations' === $this->requestUri[2]) {
             $obj_name = 'CardOperation';
         } else {
@@ -60,8 +61,14 @@ class Api
             $param = $this->requestUri[3];
             $this->objMethodName = $param === 'bonuses' ? 'getBonuses' : 'getMaxPossibleBonusesSum';
         } else {
-            $this->objMethodName = $this->action . $obj_name;
+            if ('cards_count' === $this->requestUri[3]) {
+                $this->objMethodName = 'getCardsCount';
+            } else {
+                $this->objMethodName = $this->action . $obj_name;
+            }
+
         }
+        file_put_contents('20.txt', $this->objName . '  ' . $this->objMethodName);
 
         //}
     }
