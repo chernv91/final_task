@@ -220,5 +220,102 @@ $(document).ready(function () {
         }
 
     });
+
+    $('#block_card').click(function () {
+        let cardNumber = $('#find #card_number').val();
+        let id = $('#hidden_params #client_id').val();
+        $.ajax({
+            method : 'PUT',
+            url    : 'api/clients/',
+            //dataType: 'json',
+            data   : {
+                card_number: cardNumber,
+                card_status: 'Заблокирована',
+                operation  : 'block_card'
+            },
+            success: function (data) {
+                $.ajax({
+                    method: 'POST',
+                    url   : 'api/cardoperations/',
+                    //dataType: 'json',
+                    data  : {
+                        name     : 'Изменение статуса карты',
+                        client_id: id,
+                        new_value: 'Заблокирована',
+                        //user_ip_key: '',
+                    },
+                    /*success : function (data) {
+                        alert(data);
+                    },*/
+                });
+            }
+        });
+    });
+
+    $('#unblock_card').click(function () {
+        let id = $('#hidden_params #client_id').val();
+        let cardNumber = $('#find #card_number').val();
+        $.ajax({
+            method : 'PUT',
+            url    : 'api/clients/',
+            //dataType: 'json',
+            data   : {
+                card_number: cardNumber,
+                card_status: 'Активна',
+                operation  : 'unblock_card'
+            },
+            success: function (data) {
+                $.ajax({
+                    method: 'POST',
+                    url   : 'api/cardoperations/',
+                    //dataType: 'json',
+                    data  : {
+                        name     : 'Изменение статуса карты',
+                        client_id: id,
+                        new_value: 'Активна',
+                        //user_ip_key: '',
+                    },
+                    /*success : function (data) {
+                        alert(data);
+                    },*/
+                });
+            }
+        });
+    });
+
+    $('#change_percent').click(function () {
+        let id = $('#hidden_params #client_id').val();
+        let cardNumber = $('#find #card_number').val();
+        let oldPercent = $('#find #discount').val();
+        let newPercent = $('#new_percent').val();
+        $.ajax({
+            method : 'PUT',
+            url    : 'api/clients/',
+            //dataType: 'json',
+            data   : {
+                card_number: cardNumber,
+                discount: newPercent,
+                operation  : 'change_percent'
+            },
+            success: function (data) {
+                alert(data);
+                $.ajax({
+                    method: 'POST',
+                    url   : 'api/cardoperations/',
+                    //dataType: 'json',
+                    data  : {
+                        name     : 'Изменение процента по карте',
+                        client_id: id,
+                        old_value: oldPercent,
+                        new_value: newPercent,
+                        //user_ip_key: '',
+                    },
+                    success : function (data) {
+                        alert(data);
+                    },
+                });
+            }
+        });
+    });
 })
 ;

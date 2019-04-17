@@ -47,18 +47,33 @@ class ClientApi extends Api
             $param = explode('=', $param);
             $params[$param[0]] = $param[1];
         }
+// Добавить INT
+        if (array_key_exists('operation', $params)) {
+            if ('add_bonuses' === $params['operation'] || 'subtract_bonuses' === $params['operation']) {
+                $sql = "UPDATE client SET bonus_balance = :bonusBalance,  total_sum = :totalSum WHERE id = :id";
+                $data = $this->db->prepare($sql);
 
-        if (array_key_exists('operation',
-                $params) && ('add_bonuses' === $params['operation'] || 'subtract_bonuses' === $params['operation'])) {
-            $sql = "UPDATE client SET bonus_balance = :bonusBalance,  total_sum = :totalSum WHERE id = :id";
-            $data = $this->db->prepare($sql);
+                $data->bindParam(':bonusBalance', $params['bonus_balance']);
+                $data->bindParam(':totalSum', $params['total_sum']);
+                $data->bindParam(':id', $params['id']);
+            } elseif ('block_card' === $params['operation'] || 'unblock_card' === $params['operation']) {
+                $sql = "UPDATE client SET card_status = :cardStatus WHERE card_number = :cardNumber";
+                $data = $this->db->prepare($sql);
 
-            $data->bindParam(':bonusBalance', $params['bonus_balance']);
-            $data->bindParam(':totalSum', $params['total_sum']);
-            $data->bindParam(':id', $params['id']);
+                $data->bindParam(':cardStatus', urldecode($params['card_status']));
+                $data->bindParam(':cardNumber', $params['card_number']);
+            } elseif ('change_percent' === $params['operation']) {
+                $cardNumberField = 'phone' === $this->cardNumberType ? 'phone' : 'card_number';
+                $sql = "UPDATE client SET discount = :discount WHERE $cardNumberField = :cardNumber";
+                $data = $this->db->prepare($sql);
+
+                $data->bindParam(':discount', $params['discount']);
+                $data->bindParam(':cardNumber', $params['card_number']);
+            }
+
         }
 
-
+// url_decode тут тоже
         /*$sql = 'UPDATE client SET ';
 
         foreach ($params as $key => $value) {

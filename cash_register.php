@@ -23,6 +23,11 @@
     <input type="text" id="discount" size="15"><br>
     <p>Количество бонусов:</p>
     <input type="text" id="bonus_balance" size="15"><br>
+    <p>Изменить процент скидки:</p>
+    <input type="text" id="new_percent" size="15">
+    <input type="button" id="change_percent" value="OK"><br>
+    <input type="button" id="block_card" value="Заблокировать карту"><br>
+    <input type="button" id="unblock_card" value="Разблокировать карту"><br>
 </form>
 <h3>Форма добавления клиента</h3>
 <form action="" method="POST" id="add">
