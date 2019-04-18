@@ -82,7 +82,7 @@ class Api
         try {
             $this->db = new PDO($dsn, $user, $password, $options);
         } catch (PDOException $e) {
-            //echo 'Подключение не удалось; ' . $e->getMessage();
+            echo 'Подключение не удалось; ' . $e->getMessage();
         }
     }
 
