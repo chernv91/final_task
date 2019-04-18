@@ -1,4 +1,4 @@
-Access-Control-Allow-Origin: http://charlie.rarus-crimea.ru/
+Access-Control-Allow-Origin: charlie.rarus-crimea.ru
 RewriteEngine On
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
