@@ -1,6 +1,4 @@
-<ifModule mod_headers.c>
-    Header set Access-Control-Allow-Origin: *
-</ifModule>
+Header set Access-Control-Allow-Origin: *
 RewriteEngine On
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
