@@ -20,10 +20,10 @@ class Api
 
     public function __construct()
     {
-        header("Access-Control-Allow-Orgin: *");
-        header("Access-Control-Allow-Methods: *");
+        header("Access-Control-Allow-Orgin: http://charlie.rarus-crimea.ru/final_task");
+        //header("Access-Control-Allow-Methods: *");
         $this->requestUri = explode('/', trim($_SERVER['REQUEST_URI'], '/'));
-        if ($this->requestUri[1] !== 'api' || !in_array($this->requestUri[2], $this->routers, true)) {
+        if ($this->requestUri[0] !== 'api' || !in_array($this->requestUri[1], $this->routers, true)) {
             header('HTTP/1.0 400 Bad Request');
             echo json_encode(['code' => '400', 'message' => 'API Not Found']);
             exit();
@@ -33,7 +33,7 @@ class Api
             $this->config = $config;
             unset($config);
             //Раскоментить только после того как в скрипте везде будет джейсон!
-            //header("Content-Type: application/json");
+            header("Content-Type: application/json");
 
             $this->requestMethod = $_SERVER['REQUEST_METHOD'];
             $this->requestParams = $_REQUEST;
@@ -43,7 +43,7 @@ class Api
             $this->cardNumberType = array_search(true, $this->config['card_number_type'], true);
             $this->sumBonus = array_reverse($this->config['sum_bonus'], true);
 
-            $obj_name = explode('_', substr($this->requestUri[2], 0, -1));
+            $obj_name = explode('_', substr($this->requestUri[1], 0, -1));
             foreach ($obj_name as &$part) {
                 $part = ucfirst($part);
             }
@@ -52,10 +52,10 @@ class Api
             $this->objName = $obj_name . 'Api';
 
             if ('CalculatorApi' === $this->objName) {
-                $param = $this->requestUri[3];
+                $param = $this->requestUri[2];
                 $this->objMethodName = $param === 'bonuses' ? 'getBonuses' : 'getMaxPossibleSum';
             } else {
-                if ('cards_count' === $this->requestUri[3]) {
+                if ('cards_count' === $this->requestUri[2]) {
                     $this->objMethodName = 'getCardsCount';
                 } else {
                     $this->objMethodName = $this->action . $obj_name;

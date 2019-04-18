@@ -6,7 +6,7 @@ class CardOperationApi extends Api
 {
     public function getCardOperation()
     {
-        $operation = $this->requestUri[3];
+        $operation = $this->requestUri[2];
 
         if ('subtracted_bonuses_sum' === $operation || 'card_bonuses_sum' === $operation) {
             $name = $operation === 'subtracted_bonuses_sum' ? 'Списание бонусов' : 'Начисление бонусов';
