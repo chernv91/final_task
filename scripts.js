@@ -2,7 +2,11 @@ $(document).ready(function () {
 
     $.ajax({
         url     : 'http://charlie@rarus-crimea.ru/api/configurators/',
+        crossDomain: true,
         dataType: 'json',
+        header: {
+            'Access-Control-Allow-Orgin': '*',
+        },
         success : function (data) {
             console.log(data);
             let loyaltyProgram = '';
