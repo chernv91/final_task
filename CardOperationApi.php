@@ -7,7 +7,6 @@ class CardOperationApi extends Api
     public function getCardOperation()
     {
         $operation = $this->requestUri[3];
-        file_put_contents('20.txt', $cardNumber . ' ' . $cardNumberField . ' ' . $operation);
 
         if ('subtracted_bonuses_sum' === $operation || 'card_bonuses_sum' === $operation) {
             $name = $operation === 'subtracted_bonuses_sum' ? 'Списание бонусов' : 'Начисление бонусов';
@@ -83,18 +82,3 @@ class CardOperationApi extends Api
         return true;
     }
 }
-
-/*$api = new Api();
-$card = new CardOperationApi();
-print_r($card->getCardOperation());
-//var_dump($user_api->getUser('5550d565b6f28a76f1c94ff87e8d9cd9'));
-//var_dump($user_api->deleteUser('9828a24b71c7d916ba97b267730ab57a'));
-//var_dump($client_api->createClient('Руслан', 'Иванович', 'Иванов', '1966-03-09', 79787951477, 124, 8));
-$user_api_key = '7828a24b71c7d916ba97b267730ab57a';
-$card_operation = new CardOperationApi();
-
-try {
-    $card_operation->createCardOperation('Выпуск карты', 1, $user_api_key);
-} catch (Exception $e) {
-    echo $e->getMessage();
-}*/

@@ -20,64 +20,50 @@ class Api
 
     public function __construct()
     {
-        require_once 'config.php';
-        global $config;
-        $this->config = $config;
-        unset($config);
-        header("Content-Type: application/json");
-        //header ("Content-Disposition: inline; filename = ajax.json");
-
         $this->requestUri = explode('/', trim($_SERVER['REQUEST_URI'], '/'));
-        // Убрать эту строчку потом!!!
-        //array_shift($this->requestUri);
-        $this->requestMethod = $_SERVER['REQUEST_METHOD'];
-        $this->requestParams = $_REQUEST;
-        $this->action = $this->getAction();
-        $this->connectDb();
-        $this->loyaltyProgram = array_search(true, $this->config['loyalty_program'], true);
-        $this->cardNumberType = array_search(true, $this->config['card_number_type'], true);
-        $this->sumBonus = array_reverse($this->config['sum_bonus'], true);
-        //if (array_shift($this->requestUri) !== 'api' || !in_array(array_shift($this->requestUri), $this->routers,
-        // true)) {
-        /*//throw new Exception('API Not Found', 404);
-        //header('HTTP/1.0 400 Bad Request');
-        echo json_encode([
-            'code'    => '400',
-            'message' => 'Bad Request',
-        ]);*/
-
-        // }
-        //else {
-        //разбить по _
-        if ('cardoperations' === $this->requestUri[2]) {
-            $obj_name = 'CardOperation';
+        if ($this->requestUri[1] !== 'api' || !in_array($this->requestUri[2], $this->routers, true)) {
+            header('HTTP/1.0 400 Bad Request');
+            echo json_encode(['code' => '400', 'message' => 'API Not Found']);
+            exit();
         } else {
-            $obj_name = ucfirst(substr($this->requestUri[2], 0, -1));
-        }
+            require_once 'config.php';
+            global $config;
+            $this->config = $config;
+            unset($config);
+            //Раскоментить только после того как в скрипте везде будет джейсон!
+            //header("Content-Type: application/json");
 
-        $this->objName = $obj_name . 'Api';
+            $this->requestMethod = $_SERVER['REQUEST_METHOD'];
+            $this->requestParams = $_REQUEST;
+            $this->action = $this->getAction();
+            $this->connectDb();
+            $this->loyaltyProgram = array_search(true, $this->config['loyalty_program'], true);
+            $this->cardNumberType = array_search(true, $this->config['card_number_type'], true);
+            $this->sumBonus = array_reverse($this->config['sum_bonus'], true);
 
-        if ('CalculatorApi' === $this->objName) {
-            $param = $this->requestUri[3];
-            $this->objMethodName = $param === 'bonuses' ? 'getBonuses' : 'getMaxPossibleBonusesSum';
-        } else {
-            if ('cards_count' === $this->requestUri[3]) {
-                $this->objMethodName = 'getCardsCount';
-            } else {
-                $this->objMethodName = $this->action . $obj_name;
+            $obj_name = explode('_', substr($this->requestUri[2], 0, -1));
+            foreach ($obj_name as &$part) {
+                $part = ucfirst($part);
             }
+            unset($part);
+            $obj_name = implode($obj_name);
+            $this->objName = $obj_name . 'Api';
 
+            if ('CalculatorApi' === $this->objName) {
+                $param = $this->requestUri[3];
+                $this->objMethodName = $param === 'bonuses' ? 'getBonuses' : 'getMaxPossibleBonusesSum';
+            } else {
+                if ('cards_count' === $this->requestUri[3]) {
+                    $this->objMethodName = 'getCardsCount';
+                } else {
+                    $this->objMethodName = $this->action . $obj_name;
+                }
+
+            }
+            file_put_contents('20.txt', $this->objName . '  ' . $this->objMethodName, FILE_APPEND);
         }
-        file_put_contents('20.txt', $this->objName . '  ' . $this->objMethodName);
 
-        //}
     }
-
-    /*public function run()
-    {
-
-    }*/
-
 
     public function connectDb()
     {
@@ -101,6 +87,7 @@ class Api
     public function getAction()
     {
         $action = null;
+
         switch ($this->requestMethod) {
             case 'GET':
                 $action = 'get';
@@ -115,9 +102,8 @@ class Api
                 $action = 'create';
                 break;
         }
+
         return $action;
     }
 }
 
-$api = new Api();
-$api->connectDb();

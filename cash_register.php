@@ -3,7 +3,11 @@
     <style>
         form {
             float: left;
-            margin: 10px;
+            margin: 20px;
+        }
+
+        input[type=button] {
+            margin: 5px 0;
         }
     </style>
     <script

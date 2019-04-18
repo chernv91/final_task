@@ -117,6 +117,8 @@ class ClientApi extends Api
         } catch (PDOException $e) {
             echo 'Ошибка: ' . $e->getMessage();
         }
+
+        return 'ok';
     }
 
     public function createClient()

@@ -15,3 +15,6 @@ require_once 'CalculatorApi.php';
 /*} catch (Exception $e) {
     echo $e->getMessage();
 }*/
+
+//$better_token = md5(uniqid(rand(),1));
+//echo $better_token;

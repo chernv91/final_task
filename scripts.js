@@ -6,7 +6,7 @@ $(document).ready(function () {
         let purchaseSum = $('#sale #purchase_sum').val();
         $.ajax({
             url     : 'api/calculators/max_possible_bonuses_sum/' + purchaseSum,
-            dataType: 'json',
+            //dataType: 'json',
             success : function (data) {
                 $('#max_possible_sum').text(data);
             },
@@ -47,6 +47,9 @@ $(document).ready(function () {
 
                 }
             },
+            error: function(data){
+                alert(data.responseJSON.code + ' - ' + data.responseJSON.message);
+            }
         });
     });
 
@@ -76,7 +79,7 @@ $(document).ready(function () {
                     let id = data;
                     $.ajax({
                         method: 'POST',
-                        url   : 'api/cardoperations/',
+                        url   : 'api/card_operations/',
                         //dataType: 'json',
                         data  : {
                             name     : 'Выпуск карты',
@@ -137,7 +140,7 @@ $(document).ready(function () {
                                 alert(data);
                                 $.ajax({
                                     method: 'POST',
-                                    url   : 'api/cardoperations/',
+                                    url   : 'api/card_operations/',
                                     //dataType: 'json',
                                     data  : {
                                         name     : 'Начисление бонусов',
@@ -151,7 +154,7 @@ $(document).ready(function () {
                                 });
                                 $.ajax({
                                     method: 'POST',
-                                    url   : 'api/cardoperations/',
+                                    url   : 'api/card_operations/',
                                     //dataType: 'json',
                                     data  : {
                                         name     : 'Регистрация оборота по карте',
@@ -187,7 +190,7 @@ $(document).ready(function () {
                     alert(data);
                     $.ajax({
                         method: 'POST',
-                        url   : 'api/cardoperations/',
+                        url   : 'api/card_operations/',
                         //dataType: 'json',
                         data  : {
                             name     : 'Списание бонусов',
@@ -195,13 +198,13 @@ $(document).ready(function () {
                             new_value: bonusesForSubtract,
                             //user_ip_key: '',
                         },
-                        /*success : function (data) {
+                        success : function (data) {
                             alert(data);
-                        },*/
+                        },
                     });
                     $.ajax({
                         method: 'POST',
-                        url   : 'api/cardoperations/',
+                        url   : 'api/card_operations/',
                         //dataType: 'json',
                         data  : {
                             name     : 'Регистрация оборота по карте',
@@ -236,7 +239,7 @@ $(document).ready(function () {
             success: function (data) {
                 $.ajax({
                     method: 'POST',
-                    url   : 'api/cardoperations/',
+                    url   : 'api/card_operations/',
                     //dataType: 'json',
                     data  : {
                         name     : 'Изменение статуса карты',
@@ -267,7 +270,7 @@ $(document).ready(function () {
             success: function (data) {
                 $.ajax({
                     method: 'POST',
-                    url   : 'api/cardoperations/',
+                    url   : 'api/card_operations/',
                     //dataType: 'json',
                     data  : {
                         name     : 'Изменение статуса карты',
@@ -298,10 +301,10 @@ $(document).ready(function () {
                 operation  : 'change_percent'
             },
             success: function (data) {
-                alert(data);
+                alert('ok');
                 $.ajax({
                     method : 'POST',
-                    url    : 'api/cardoperations/',
+                    url    : 'api/card_operations/',
                     //dataType: 'json',
                     data   : {
                         name     : 'Изменение процента по карте',
@@ -320,7 +323,7 @@ $(document).ready(function () {
 
     $('#subtracted_bonuses_sum').click(function () {
         $.ajax({
-            url     : 'api/cardoperations/subtracted_bonuses_sum',
+            url     : 'api/card_operations/subtracted_bonuses_sum',
             dataType: 'json',
             success : function (data) {
                 $('#subtracted_bonuses_res').val(data);
@@ -330,7 +333,7 @@ $(document).ready(function () {
 
     $('#card_bonuses_sum').click(function () {
         $.ajax({
-            url     : 'api/cardoperations/card_bonuses_sum',
+            url     : 'api/card_operations/card_bonuses_sum',
             dataType: 'json',
             success : function (data) {
                 $('#card_bonuses_res').val(data);
@@ -342,7 +345,7 @@ $(document).ready(function () {
     $('#card_history').click(function () {
         let cardNumber = $('#reports #card_number').val();
         $.ajax({
-            url     : 'api/cardoperations/card_history/' + cardNumber,
+            url     : 'api/card_operations/card_history/' + cardNumber,
             dataType: 'json',
             success : function (data) {
                 let html = '<table border="1" cellspacing="0" cellpadding="5">' +

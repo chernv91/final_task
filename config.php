@@ -1,9 +1,9 @@
 <?php
 $config = [
     'loyalty_program'       => [
-        'discount'    => true,
+        'discount'    => false,
         'bonus_type1' => false,
-        'bonus_type2' => false,
+        'bonus_type2' => true,
     ],
     'card_number_type'      => [
         'phone'       => false,
