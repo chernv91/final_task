@@ -20,6 +20,8 @@ class Api
 
     public function __construct()
     {
+        header("Access-Control-Allow-Orgin: *");
+        header("Access-Control-Allow-Methods: *");
         $this->requestUri = explode('/', trim($_SERVER['REQUEST_URI'], '/'));
         if ($this->requestUri[1] !== 'api' || !in_array($this->requestUri[2], $this->routers, true)) {
             header('HTTP/1.0 400 Bad Request');
