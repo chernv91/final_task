@@ -1,7 +1,7 @@
 $(document).ready(function () {
 
     $.ajax({
-        url     : 'http://charlie@rarus-crimea.ru/final_task/api/configurators/',
+        url     : 'http://charlie.rarus-crimea.ru/final_task/api/configurators/',
         crossDomain: true,
         dataType: 'json',
         header: {
