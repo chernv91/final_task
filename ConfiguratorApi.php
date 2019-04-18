@@ -4,8 +4,9 @@ require_once 'Api.php';
 
 class ConfiguratorApi extends Api
 {
-    private function getConfigurator()
+    public function getConfigurator(): string
     {
+        return json_encode($this->config);
     }
 
     private function updateConfigurator()

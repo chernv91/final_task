@@ -1,13 +1,78 @@
 $(document).ready(function () {
 
+    $.ajax({
+        url     : 'api/configurators/',
+        dataType: 'json',
+        success : function (data) {
+            console.log(data);
+            let loyaltyProgram = '';
+            let cardNumberType = '';
+            for (key in data.loyalty_program) {
+                if (data.loyalty_program[key] === true) {
+                    loyaltyProgram = key;
+                    break;
+                }
+            }
+
+            for (key in data.card_number_type) {
+                if (data.card_number_type[key] === true) {
+                    cardNumberType = key;
+                    break;
+                }
+            }
+
+            $('#settings #max_percent').val(data.bonus_payment_percent);
+            $('#settings #loyalty_program').text(loyaltyProgram);
+            $('#settings #card_number_type').text(cardNumberType);
+        },
+    });
+
+    $('#edit_loyalty_program').click(function () {
+        $.ajax({
+            url     : 'api/configurators/',
+            dataType: 'json',
+            success : function (data) {
+                let html = '';
+                for (key in data.loyalty_program) {
+                    if (data.loyalty_program[key] === true) {
+                        html += '<input type="radio" name="loyalty_program" value="' + key + '" checked>' + key;
+                    } else {
+                        html += '<input type="radio" name="loyalty_program" value="' + key + '">' + key;
+                    }
+                }
+                html += '<br><input type="button" id="save_loyalty_program" value="Сохранить настройки">';
+                $('#loyalty_program').parent().after(html);
+            }
+        });
+    });
+
+    $('#edit_card_number_type').click(function () {
+        $.ajax({
+            url     : 'api/configurators/',
+            dataType: 'json',
+            success : function (data) {
+                let html = '';
+                for (key in data.card_number_type) {
+                    if (data.card_number_type[key] === true) {
+                        html += '<input type="radio" name="card_number_type" value="' + key + '" checked>' + key;
+                    } else {
+                        html += '<input type="radio" name="card_number_type" value="' + key + '">' + key;
+                    }
+                }
+                html += '<br><input type="button" id="save_card_number_type" value="Сохранить настройки">';
+                $('#card_number_type').parent().after(html);
+            }
+        });
+    });
+
     $('#max_possible_sum').parent().hide();
 
     $("#purchase_sum").change(function () {
         let purchaseSum = $('#sale #purchase_sum').val();
         $.ajax({
-            url     : 'api/calculators/max_possible_bonuses_sum/' + purchaseSum,
+            url    : 'api/calculators/max_possible_bonuses_sum/' + purchaseSum,
             //dataType: 'json',
-            success : function (data) {
+            success: function (data) {
                 $('#max_possible_sum').text(data);
             },
         });
@@ -47,7 +112,7 @@ $(document).ready(function () {
 
                 }
             },
-            error: function(data){
+            error   : function (data) {
                 alert(data.responseJSON.code + ' - ' + data.responseJSON.message);
             }
         });
@@ -105,7 +170,7 @@ $(document).ready(function () {
         } else {
             var purchase_sum = $('#purchase_sum').val();
             $('#purchase_sum').val(purchase_sum - bonusesForSubtract);
-            $('#hidden_params #subtract_bonuses').val('true');
+            $('#hidden_params #operation').val('subtract_bonuses');
         }
     });
 
@@ -117,7 +182,7 @@ $(document).ready(function () {
         let operation = $('#hidden_params #subtract_bonuses').val();
         totalSum = +totalSum + +purchaseSum;
 
-        if ('false' === operation) {
+        if ('add_bonuses' === operation) {
             $.ajax({
                 url     : 'api/calculators/bonuses/' + id + '/' + purchaseSum,
                 dataType: 'json',
@@ -189,16 +254,16 @@ $(document).ready(function () {
                 success: function (data) {
                     alert(data);
                     $.ajax({
-                        method: 'POST',
-                        url   : 'api/card_operations/',
+                        method : 'POST',
+                        url    : 'api/card_operations/',
                         //dataType: 'json',
-                        data  : {
+                        data   : {
                             name     : 'Списание бонусов',
                             client_id: id,
                             new_value: bonusesForSubtract,
                             //user_ip_key: '',
                         },
-                        success : function (data) {
+                        success: function (data) {
                             alert(data);
                         },
                     });
@@ -366,9 +431,9 @@ $(document).ready(function () {
 
     $('#cards_count').click(function () {
         $.ajax({
-            url     : 'api/clients/cards_count',
+            url    : 'api/clients/cards_count',
             //dataType: 'json',
-            success : function (data) {
+            success: function (data) {
                 $('#cards_count_res').val(data);
             }
         });

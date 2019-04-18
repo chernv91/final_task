@@ -9,8 +9,8 @@ class ClientApi extends Api
     public function getClient()
     {
         $cardNumber = array_pop($this->requestUri);
-        $loyaltyProgramField = 'discount' === $this->loyaltyProgram ? 'discount' : 'bonus_balance';
-        $cardNumberField = 'phone' === $this->cardNumberType ? 'phone' : 'card_number';
+        $loyaltyProgramField = 'Скидка' === $this->loyaltyProgram ? 'discount' : 'bonus_balance';
+        $cardNumberField = 'Номер телефона' === $this->cardNumberType ? 'phone' : 'card_number';
 
         if ('phone' === $cardNumberField) {
             $phone = $cardNumber;
@@ -39,7 +39,7 @@ class ClientApi extends Api
 
     public function getCardsCount()
     {
-        $cardNumberField = 'phone' === $this->cardNumberType ? 'phone' : 'card_number';
+        $cardNumberField = 'Номер телефона' === $this->cardNumberType ? 'phone' : 'card_number';
 
         if ('phone' === $cardNumberField) {
             $sql = "SELECT COUNT(*) AS cnt from client";
@@ -84,7 +84,7 @@ class ClientApi extends Api
                 $data->bindParam(':cardStatus', urldecode($params['card_status']));
                 $data->bindParam(':cardNumber', $params['card_number']);
             } elseif ('change_percent' === $params['operation']) {
-                $cardNumberField = 'phone' === $this->cardNumberType ? 'phone' : 'card_number';
+                $cardNumberField = 'Номер телефона' === $this->cardNumberType ? 'phone' : 'card_number';
                 $sql = "UPDATE client SET discount = :discount WHERE $cardNumberField = :cardNumber";
                 $data = $this->db->prepare($sql);
 

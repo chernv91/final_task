@@ -72,10 +72,21 @@
     <input type="button" id="subtracted_bonuses_sum" value="Сумма списанных бонусов"><br>
     <input type="text" id="subtracted_bonuses_res" size="10" value=""><span> руб</span><br>
 </form>
+<h3>Настройки</h3>
+<form action="" id="settings">
+    <p>Максимальный процент покупки для оплаты бонусами:</p>
+    <input type="text" id="max_percent" size="10" value=""><br>
+    <p>Программа лояльности: <span id="loyalty_program"></span>
+        <input type="button" id="edit_loyalty_program" value="Редактировать">
+    </p>
+    <p>В качестве номера карты использовать: <span id="card_number_type"></span>
+        <input type="button" id="edit_card_number_type" value="Редактировать">
+    </p>
+</form>
 <form action="" id="hidden_params">
     <input type="hidden" id="client_id" value="">
     <input type="hidden" id="total_sum" value="">
-    <input type="hidden" id="subtract_bonuses" value="false">
+    <input type="hidden" id="operation" value="add_bonuses">
 </form>
 </body>
 </html>

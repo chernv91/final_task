@@ -22,7 +22,7 @@ class CardOperationApi extends Api
             $result = $data->fetchAll()[0]['sum_bonuses'];
         } elseif ('card_history' === $operation) {
             $cardNumber = array_pop($this->requestUri);
-            $cardNumberField = 'phone' === $this->cardNumberType ? 'phone' : 'card_number';
+            $cardNumberField = 'Номер телефона' === $this->cardNumberType ? 'phone' : 'card_number';
             $sql = "SELECT name, datetime, old_value, new_value FROM card_operation WHERE client_id = (SELECT id FROM client WHERE $cardNumberField = :cardNumber)";
             $data = $this->db->prepare($sql);
             $data->bindParam(':cardNumber', $cardNumber);

@@ -8,7 +8,7 @@ class CalculatorApi extends Api
 {
     //protected $sumBonus;
 
-    public function createPurchase($operation, $id, $purchase_sum, $bonus_balance, $total_sum, $subtracted_bonuses)
+    public function createPurchase($operation, $id, $purchaseSum, $bonus_balance, $total_sum, $subtracted_bonuses)
     {
         $client = new ClientApi();
         $cardOperation = new CardOperationApi();
@@ -17,8 +17,8 @@ class CalculatorApi extends Api
         } elseif ('bonus_type1' === $this->loyaltyProgram) {
             $params = ['bonus_balance' => $bonus_balance, 'total_sum' => $total_sum];
         } else {
-            $bonus_balance = $this->getBonuses($operation, $purchase_sum, $id);
-            $total_sum = $this->getTotalSum($purchase_sum, $id);
+            $bonus_balance = $this->getBonuses($operation, $purchaseSum, $id);
+            $total_sum = $this->getTotalSum($purchaseSum, $id);
             $params = ['bonus_balance' => $bonus_balance, 'total_sum' => $total_sum];
         }
 
@@ -34,17 +34,24 @@ class CalculatorApi extends Api
 
     public function getBonuses()
     {
-        $purchase_sum = array_pop($this->requestUri);
+        $purchaseSum = array_pop($this->requestUri);
         $id = array_pop($this->requestUri);
 
-        return $this->calculateBonuses($id, $purchase_sum);
+        return $this->calculateBonuses($id, $purchaseSum);
     }
 
-    protected function calculateBonuses($id, $purchase_sum)
-    {
-        /*if ('subrtact_bonuses' === $operation) {
+    protected function calculateBonuses(
+        string $operation,
+        float $purchaseSum,
+        float $subtractedBonuses,
+        int $id
+    ): string {
+        $bonuses = 0;
+
+        if ('subrtact_bonuses' === $operation) {
             $sql = "SELECT bonus_balance FROM client WHERE id=:id";
             $data = $this->db->prepare($sql);
+
             $data->bindParam(':id', $id);
             try {
                 $data->execute();
@@ -52,46 +59,60 @@ class CalculatorApi extends Api
                 echo 'Ошибка: ' . $e->getMessage() . "\n";
                 exit();
             }
+
             $oldBonusBalance = $data->fetchAll()[0]['bonus_balance'];
-            $bonuses = $oldBonusBalance - $subtracted_bonuses;
-        } elseif ('add_bonuses' === $operation) {*/
-        $bonuses = 0;
-        foreach ($this->sumBonus as $sum => $bonus) {
-            if ($purchase_sum > $sum) {
-                $bonuses = $bonus;
-                break;
+            $bonuses = $oldBonusBalance - $subtractedBonuses;
+        } elseif ('add_bonuses' === $operation) {
+
+            foreach ($this->sumBonus as $sum => $bonus) {
+                if ($purchaseSum > $sum) {
+                    $bonuses = $bonus;
+                    break;
+                }
+            }
+
+            $isHoliday = $this->checkIsHoliday();
+            $isBirthday = $this->checkIsBirthday($id);
+
+            if ($isHoliday || $isBirthday) {
+                $bonuses *= 2;
             }
         }
-
-        $isHoliday = $this->checkIsHoliday();
-        $isBirthday = $this->checkIsBirthday($id);
-        //var_dump($isHoliday);
-        //var_dump($isBirthday);
-
-        if ($isHoliday || $isBirthday) {
-            $bonuses *= 2;
-        }
-        //}
 
         return $bonuses;
     }
 
+    /**
+     * Метод проверяет является ли сегодняшний день праздником, согласно производственному календарю
+     *
+     * @return bool
+     */
     protected function checkIsHoliday(): bool
     {
         $today = date('Y-m-d');
+
         $sql = "SELECT id FROM holiday WHERE date=:today";
         $data = $this->db->prepare($sql);
         $data->bindParam(':today', $today);
+
         try {
             $data->execute();
         } catch (PDOException $e) {
             echo 'Ошибка: ' . $e->getMessage() . "\n";
             exit();
         }
+
         return count($data->fetchAll()) === 1;
     }
 
-    protected function checkIsBirthday($id): bool
+    /**
+     * Метод проверят является ли сегодняшний день днем рождения клиента
+     *
+     * @param int $id
+     *
+     * @return bool
+     */
+    protected function checkIsBirthday(int $id): bool
     {
         $today = date('m-d');
 
@@ -112,19 +133,30 @@ class CalculatorApi extends Api
         return $today === $birthday;
     }
 
-    public function getMaxPossibleBonusesSum()
+    /**
+     * Метод возвращает максимально возможную сумму для оплаты бонусами
+     *
+     * @return string
+     */
+    public function getMaxPossibleSum(): string
     {
-        $purchase_sum = array_pop($this->requestUri);
-        $max_percent = $this->config['bonus_payment_percent'];
-        return $this->calculateMaxPossibleBonusesSum($purchase_sum, $max_percent);
+        $purchaseSum = array_pop($this->requestUri);
+        $maxPercent = $this->config['bonus_payment_percent'];
+        return $this->calculateMaxPossibleSum($purchaseSum, $maxPercent);
     }
 
-    protected function calculateMaxPossibleBonusesSum($purchase_sum, $max_percent)
+    /**
+     * Метод рассчитывает максимально возможную сумму для оплаты бонусами
+     *
+     * @param float $purchaseSum
+     * @param float $maxPercent
+     *
+     * @return string
+     */
+    protected function calculateMaxPossibleSum(float $purchaseSum, float $maxPercent): string
     {
-        return $purchase_sum * $max_percent / 100;
+        $maxSum = $purchaseSum * $maxPercent / 100;
+        return json_encode(['maxSum' => $maxSum]);
     }
 }
-/*
-$calc = new CalculatorApi();
-echo $calc->getBonuses(1000, 2);*/
 

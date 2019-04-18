@@ -13,7 +13,7 @@ class Api
     public $sumBonus;
     public $db;
     public $userApiKey = '';
-    private $routers = ['users', 'clients', 'card_operations', 'calculators'];
+    private $routers = ['users', 'clients', 'card_operations', 'calculators', 'configurators'];
     public $objName;
     public $objMethodName;
     public $config;
@@ -51,7 +51,7 @@ class Api
 
             if ('CalculatorApi' === $this->objName) {
                 $param = $this->requestUri[3];
-                $this->objMethodName = $param === 'bonuses' ? 'getBonuses' : 'getMaxPossibleBonusesSum';
+                $this->objMethodName = $param === 'bonuses' ? 'getBonuses' : 'getMaxPossibleSum';
             } else {
                 if ('cards_count' === $this->requestUri[3]) {
                     $this->objMethodName = 'getCardsCount';

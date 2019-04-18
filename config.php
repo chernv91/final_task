@@ -1,13 +1,13 @@
 <?php
 $config = [
     'loyalty_program'       => [
-        'discount'    => false,
-        'bonus_type1' => false,
-        'bonus_type2' => true,
+        'Скидка'    => false,
+        'Бонусы ("умная касса")' => false,
+        'Бонусы ("глупая касса")' => true,
     ],
     'card_number_type'      => [
-        'phone'       => false,
-        'card_number' => true,
+        'Номер телефона'       => false,
+        'Номер пластиковой карты' => true,
     ],
     'bonus_payment_percent' => '50',
     'sum_bonus'             => [
