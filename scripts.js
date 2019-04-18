@@ -130,6 +130,7 @@ $(document).ready(function () {
         let phone = $('#phone').val();
         let cardNumber = $('#add #card_number').val();
         let discount = $('#add #discount').val();
+        alert(firstName);
         $.ajax({
             method : 'POST',
             url    : 'http://charlie.rarus-crimea.ru/api/clients/',
@@ -144,6 +145,7 @@ $(document).ready(function () {
                 discount   : discount
             },
             success: function (data) {
+                alert('ok');
                 if (data && cardNumber) {
                     let id = data;
                     $.ajax({
