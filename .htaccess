@@ -1,4 +1,4 @@
-Access-Control-Allow-Origin: http://charlie.rarus-crimea.ru/final_task/cash_register.php
+Access-Control-Allow-Origin: http://charlie.rarus-crimea.ru/
 RewriteEngine On
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
