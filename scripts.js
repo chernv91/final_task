@@ -33,7 +33,7 @@ $(document).ready(function () {
 
     $('#edit_loyalty_program').click(function () {
         $.ajax({
-            url     : 'http://charlie.rarus-crimea.ru/api//api/configurators/',
+            url     : 'http://charlie.rarus-crimea.ru/api/configurators/',
             dataType: 'json',
             success : function (data) {
                 let html = '';
@@ -52,7 +52,7 @@ $(document).ready(function () {
 
     $('#edit_card_number_type').click(function () {
         $.ajax({
-            url     : 'http://charlie.rarus-crimea.ru/api//api/configurators/',
+            url     : 'http://charlie.rarus-crimea.ru/api/configurators/',
             dataType: 'json',
             success : function (data) {
                 let html = '';
@@ -74,7 +74,7 @@ $(document).ready(function () {
     $("#purchase_sum").change(function () {
         let purchaseSum = $('#sale #purchase_sum').val();
         $.ajax({
-            url    : 'http://charlie.rarus-crimea.ru/api//api/calculators/max_possible_bonuses_sum/' + purchaseSum,
+            url    : 'http://charlie.rarus-crimea.ru/api/calculators/max_possible_bonuses_sum/' + purchaseSum,
             //dataType: 'json',
             success: function (data) {
                 $('#max_possible_sum').text(data);
@@ -86,7 +86,7 @@ $(document).ready(function () {
     $('#auth').click(function () {
         let apiKey = $('#api_key').val();
         $.ajax({
-            url     : 'http://charlie.rarus-crimea.ru/api//api/users/',
+            url     : 'http://charlie.rarus-crimea.ru/api/users/',
             dataType: 'json',
             headers : {
                 'Authorization': 'Basic ' + btoa(':' + apiKey),
@@ -101,7 +101,7 @@ $(document).ready(function () {
     $('#get_client').click(function () {
         let cardNumber = $('#find #card_number').val();
         $.ajax({
-            url     : 'http://charlie.rarus-crimea.ru/api//api/clients/' + cardNumber,
+            url     : 'http://charlie.rarus-crimea.ru/api/clients/' + cardNumber,
             dataType: 'json',
             success : function (data) {
                 for (key in data) {
@@ -132,7 +132,7 @@ $(document).ready(function () {
         let discount = $('#add #discount').val();
         $.ajax({
             method : 'POST',
-            url    : 'http://charlie.rarus-crimea.ru/api//api/clients/',
+            url    : 'http://charlie.rarus-crimea.ru/api/clients/',
             //dataType: 'json',
             data   : {
                 first_name : firstName,
@@ -148,7 +148,7 @@ $(document).ready(function () {
                     let id = data;
                     $.ajax({
                         method: 'POST',
-                        url   : 'http://charlie.rarus-crimea.ru/api//api/card_operations/',
+                        url   : 'http://charlie.rarus-crimea.ru/api/card_operations/',
                         //dataType: 'json',
                         data  : {
                             name     : 'Выпуск карты',
@@ -188,7 +188,7 @@ $(document).ready(function () {
 
         if ('add_bonuses' === operation) {
             $.ajax({
-                url     : 'http://charlie.rarus-crimea.ru/api//api/calculators/bonuses/' + id + '/' + purchaseSum,
+                url     : 'http://charlie.rarus-crimea.ru/api/calculators/bonuses/' + id + '/' + purchaseSum,
                 dataType: 'json',
                 success : function (data) {
                     if (data) {
@@ -197,7 +197,7 @@ $(document).ready(function () {
 
                         $.ajax({
                             method : 'PUT',
-                            url    : 'http://charlie.rarus-crimea.ru/api//api/clients/',
+                            url    : 'http://charlie.rarus-crimea.ru/api/clients/',
                             //dataType: 'json',
                             data   : {
                                 id           : id,
@@ -209,7 +209,7 @@ $(document).ready(function () {
                                 alert(data);
                                 $.ajax({
                                     method: 'POST',
-                                    url   : 'http://charlie.rarus-crimea.ru/api//api/card_operations/',
+                                    url   : 'http://charlie.rarus-crimea.ru/api/card_operations/',
                                     //dataType: 'json',
                                     data  : {
                                         name     : 'Начисление бонусов',
@@ -223,7 +223,7 @@ $(document).ready(function () {
                                 });
                                 $.ajax({
                                     method: 'POST',
-                                    url   : 'http://charlie.rarus-crimea.ru/api//api/card_operations/',
+                                    url   : 'http://charlie.rarus-crimea.ru/api/card_operations/',
                                     //dataType: 'json',
                                     data  : {
                                         name     : 'Регистрация оборота по карте',
@@ -247,7 +247,7 @@ $(document).ready(function () {
 
             $.ajax({
                 method : 'PUT',
-                url    : 'http://charlie.rarus-crimea.ru/api//api/clients/',
+                url    : 'http://charlie.rarus-crimea.ru/api/clients/',
                 //dataType: 'json',
                 data   : {
                     id           : id,
@@ -259,7 +259,7 @@ $(document).ready(function () {
                     alert(data);
                     $.ajax({
                         method : 'POST',
-                        url    : 'http://charlie.rarus-crimea.ru/api//api/card_operations/',
+                        url    : 'http://charlie.rarus-crimea.ru/api/card_operations/',
                         //dataType: 'json',
                         data   : {
                             name     : 'Списание бонусов',
@@ -273,7 +273,7 @@ $(document).ready(function () {
                     });
                     $.ajax({
                         method: 'POST',
-                        url   : 'http://charlie.rarus-crimea.ru/api//api/card_operations/',
+                        url   : 'http://charlie.rarus-crimea.ru/api/card_operations/',
                         //dataType: 'json',
                         data  : {
                             name     : 'Регистрация оборота по карте',
@@ -298,7 +298,7 @@ $(document).ready(function () {
         let id = $('#hidden_params #client_id').val();
         $.ajax({
             method : 'PUT',
-            url    : 'http://charlie.rarus-crimea.ru/api//api/clients/',
+            url    : 'http://charlie.rarus-crimea.ru/api/clients/',
             //dataType: 'json',
             data   : {
                 card_number: cardNumber,
@@ -308,7 +308,7 @@ $(document).ready(function () {
             success: function (data) {
                 $.ajax({
                     method: 'POST',
-                    url   : 'http://charlie.rarus-crimea.ru/api//api/card_operations/',
+                    url   : 'http://charlie.rarus-crimea.ru/api/card_operations/',
                     //dataType: 'json',
                     data  : {
                         name     : 'Изменение статуса карты',
@@ -329,7 +329,7 @@ $(document).ready(function () {
         let cardNumber = $('#find #card_number').val();
         $.ajax({
             method : 'PUT',
-            url    : 'http://charlie.rarus-crimea.ru/api//api/clients/',
+            url    : 'http://charlie.rarus-crimea.ru/api/clients/',
             //dataType: 'json',
             data   : {
                 card_number: cardNumber,
@@ -339,7 +339,7 @@ $(document).ready(function () {
             success: function (data) {
                 $.ajax({
                     method: 'POST',
-                    url   : 'http://charlie.rarus-crimea.ru/api//api/card_operations/',
+                    url   : 'http://charlie.rarus-crimea.ru/api/card_operations/',
                     //dataType: 'json',
                     data  : {
                         name     : 'Изменение статуса карты',
@@ -362,7 +362,7 @@ $(document).ready(function () {
         let newPercent = $('#new_percent').val();
         $.ajax({
             method : 'PUT',
-            url    : 'http://charlie.rarus-crimea.ru/api//api/clients/',
+            url    : 'http://charlie.rarus-crimea.ru/api/clients/',
             //dataType: 'json',
             data   : {
                 card_number: cardNumber,
@@ -373,7 +373,7 @@ $(document).ready(function () {
                 alert('ok');
                 $.ajax({
                     method : 'POST',
-                    url    : 'http://charlie.rarus-crimea.ru/api//api/card_operations/',
+                    url    : 'http://charlie.rarus-crimea.ru/api/card_operations/',
                     //dataType: 'json',
                     data   : {
                         name     : 'Изменение процента по карте',
@@ -392,7 +392,7 @@ $(document).ready(function () {
 
     $('#subtracted_bonuses_sum').click(function () {
         $.ajax({
-            url     : 'http://charlie.rarus-crimea.ru/api//api/card_operations/subtracted_bonuses_sum',
+            url     : 'http://charlie.rarus-crimea.ru/api/card_operations/subtracted_bonuses_sum',
             dataType: 'json',
             success : function (data) {
                 $('#subtracted_bonuses_res').val(data);
@@ -402,7 +402,7 @@ $(document).ready(function () {
 
     $('#card_bonuses_sum').click(function () {
         $.ajax({
-            url     : 'http://charlie.rarus-crimea.ru/api//api/card_operations/card_bonuses_sum',
+            url     : 'http://charlie.rarus-crimea.ru/api/card_operations/card_bonuses_sum',
             dataType: 'json',
             success : function (data) {
                 $('#card_bonuses_res').val(data);
@@ -414,7 +414,7 @@ $(document).ready(function () {
     $('#card_history').click(function () {
         let cardNumber = $('#reports #card_number').val();
         $.ajax({
-            url     : 'http://charlie.rarus-crimea.ru/api//api/card_operations/card_history/' + cardNumber,
+            url     : 'http://charlie.rarus-crimea.ru/api/card_operations/card_history/' + cardNumber,
             dataType: 'json',
             success : function (data) {
                 let html = '<table border="1" cellspacing="0" cellpadding="5">' +
@@ -435,7 +435,7 @@ $(document).ready(function () {
 
     $('#cards_count').click(function () {
         $.ajax({
-            url    : 'http://charlie.rarus-crimea.ru/api//api/clients/cards_count',
+            url    : 'http://charlie.rarus-crimea.ru/api/clients/cards_count',
             //dataType: 'json',
             success: function (data) {
                 $('#cards_count_res').val(data);
