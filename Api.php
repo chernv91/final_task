@@ -33,7 +33,7 @@ class Api
             $this->config = $config;
             unset($config);
             //Раскоментить только после того как в скрипте везде будет джейсон!
-            header("Content-Type: application/json");
+            //header("Content-Type: application/json");
 
             $this->requestMethod = $_SERVER['REQUEST_METHOD'];
             $this->requestParams = $_REQUEST;
