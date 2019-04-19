@@ -11,7 +11,7 @@ class CalculatorApi extends Api
         $purchaseSum = array_pop($this->requestUri);
         $id = array_pop($this->requestUri);
 
-        return $this->calculateBonuses($id, $purchaseSum);
+        return $this->calculateBonuses($purchaseSum, $id);
     }
 
     protected function calculateBonuses(float $purchaseSum, int $id): string
@@ -22,6 +22,7 @@ class CalculatorApi extends Api
 
             if ($purchaseSum > $sum) {
                 $bonuses = $bonus;
+                file_put_contents('15.txt', "$purchaseSum $sum $bonuses");
                 break;
             }
 
