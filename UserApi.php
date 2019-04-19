@@ -1,7 +1,6 @@
 <?php
 
 require_once 'Api.php';
-require_once 'config.php';
 
 class UserApi extends Api
 {
@@ -20,12 +19,11 @@ class UserApi extends Api
         } catch (PDOException $e) {
             echo 'Ошибка; ' . $e->getMessage();
         }
-        //записать его куда-то
-        //$this->userApiKey =
 
-        $message = count($data->fetchAll()) === 1 ? 'Связь установлена' : 'Ошибка авторизации';
+        $result = $data->fetchAll();
+        $message = count($result) === 1 ? "Связь установлена, пользователь {$result[0]['last_name']} {$result[0]['first_name']}" : 'Ошибка авторизации';
 
-        return json_encode(['message' => $message]);
+        return json_encode(['message' => $message, 'role' => $result[0]['role']]);
     }
 
     private function updateUser()
