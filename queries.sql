@@ -45,7 +45,7 @@ CREATE TABLE IF NOT EXISTS card_operation
         'Изменение статуса карты',
         'Выпуск карты',
         'Скидка по карте')         NOT NULL,
-    datetime     TIMESTAMP         NOT NULL,
+    datetime     TIMESTAMP         NOT NULL DEFAULT CURRENT_TIMESTAMP,
     client_id    SMALLINT UNSIGNED NOT NULL,
     old_value    VARCHAR(30)       NULL DEFAULT '',
     new_value    VARCHAR(30)       NULL DEFAULT '',
@@ -71,4 +71,5 @@ CREATE TABLE IF NOT EXISTS holiday
     PRIMARY KEY (id)
 );
 
-INSERT INTO user(api_key, first_name, last_name, role) VALUE ('5550d565b6f28a76f1c94ff87e8d9cd9', ' Валерия', 'Чернякова', 1);
+INSERT INTO user(api_key, first_name, last_name, role) VALUE ('7828a24b71c7d916ba97b267730ab57a', 'Валерия', 'Чернякова', 1);
+INSERT INTO user(api_key, first_name, last_name, role) VALUE ('9828a24b71c7d916ba97b267730ab57a', 'Сергей', 'Поляков', 2);

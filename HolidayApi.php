@@ -4,20 +4,22 @@ require_once 'Api.php';
 
 class HolidayApi extends Api
 {
-    private function getHoliday()
+    public function getHoliday()
     {
     }
 
-    private function updateHoliday()
+    public function updateHoliday()
     {
     }
 
-    private function createHoliday()
+    public function createHoliday()
     {
 
     }
 
-    private function deleteHoliday()
+    public function deleteHoliday()
     {
     }
 }
+
+
