@@ -42,25 +42,26 @@ class CardOperationApi extends Api
 
     public function createCardOperation()
     {
-        $user_api_key = '7828a24b71c7d916ba97b267730ab57a';
-        $sql = "INSERT INTO card_operation(user_api_key, ";
+        $sql = "INSERT INTO card_operation(";
 
         $params = [];
+
         foreach ($_POST as $key => $value) {
+
             if (!empty($value)) {
                 $params[$key] = $value;
                 $sql .= $key . ', ';
             }
+
         }
 
-        $sql = substr($sql, 0, -2) . ') VALUE(:user_api_key, ';
+        $sql = substr($sql, 0, -2) . ') VALUE(';
 
         foreach ($params as $key => $value) {
             $sql .= ":$key, ";
         }
 
         $sql = substr($sql, 0, -2) . ')';
-        file_put_contents('16.txt', $sql);
         $data = $this->db->prepare($sql);
 
         foreach ($params as $key => $value) {
@@ -72,13 +73,13 @@ class CardOperationApi extends Api
             }
 
         }
-        $data->bindParam(':user_api_key', $user_api_key);
+
         try {
             $data->execute();
         } catch (PDOException $e) {
             echo 'Ошибка; ' . $e->getMessage();
         }
 
-        return true;
+        return 'ok';
     }
 }
