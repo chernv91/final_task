@@ -2,7 +2,6 @@
 
 require_once 'Api.php';
 require_once 'CardOperationApi.php';
-require_once 'config.php';
 
 class ClientApi extends Api
 {
@@ -58,7 +57,6 @@ class ClientApi extends Api
         return $data->fetchAll()[0]['cnt'];
     }
 
-    //public function updateClient($params = ['bonus_balance' => 200, 'total_sum' => 1000.25])
     public function updateClient()
     {
         $input = explode('&', file_get_contents('php://input'));
@@ -92,26 +90,25 @@ class ClientApi extends Api
                 $data->bindParam(':cardNumber', $params['card_number']);
             }
 
+        } else {
+            $sql = 'UPDATE client SET ';
+
+            foreach ($params as $key => $value) {
+                $sql .= "$key = :$key, ";
+            }
+
+            $sql = substr($sql, 0, -2);
+            $sql .= ' WHERE id = :id';
+
+            $data = $this->db->prepare($sql);
+
+            foreach ($params as $key => $value) {
+                $data->bindParam(":$key", $params[$key]);
+            }
+
         }
 
-// url_decode тут тоже
-        /*$sql = 'UPDATE client SET ';
 
-        foreach ($params as $key => $value) {
-            $sql .= "$key = :$key, ";
-        }
-
-        $sql = substr($sql, 0, -2);
-        $sql .= ' WHERE id = :id';
-
-        $data = $this->db->prepare($sql);
-
-        foreach ($params as $key => $value) {
-            $data->bindParam(":$key", $params[$key]);
-        }
-
-        $data->bindParam(':id', $id);
-*/
         try {
             $data->execute();
         } catch (PDOException $e) {
@@ -155,11 +152,16 @@ class ClientApi extends Api
             $data->execute();
         } catch (PDOException $e) {
             echo 'Ошибка; ' . $e->getMessage();
+            exit;
         }
 
-        $client_id = (int)$this->db->lastInsertId();
+        $id = (int)$this->db->lastInsertId();
 
-        return $client_id;
+        $message = $id >0 ? 'Клиент создан' : 'Ошибка при создании клиента, операция не выполнена';
+        $code = $id > 0 ? '201' : '500';
+        header("HTTP/1.0  $code  $message");
+
+        return json_encode(['code' => $code, 'message' => $message, 'id' => $id]);
     }
 
     public function deleteClient($id)
@@ -177,13 +179,3 @@ class ClientApi extends Api
         return 'Клиент удален';
     }
 }
-
-/*$api = new Api();
-$client_api = new ClientApi();
-$client_api->createClient();
-print_r($client_api->getClient());
-//var_dump($user_api->getUser('5550d565b6f28a76f1c94ff87e8d9cd9'));
-//var_dump($user_api->deleteUser('9828a24b71c7d916ba97b267730ab57a'));
-//var_dump($client_api->createClient('Степан', 'Иванович', 'Иванов', '1966-03-09', 79787951471, 126, 8));
-//var_dump($client_api->getClient('79787951475'));
-var_dump($client_api->updateClient(2));*/
