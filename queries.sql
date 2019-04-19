@@ -10,7 +10,7 @@ CREATE TABLE IF NOT EXISTS user
     api_key    CHAR(32)                      NOT NULL UNIQUE,
     first_name VARCHAR(30)                   NOT NULL,
     last_name  VARCHAR(30)                   NOT NULL,
-    role       ENUM ('Оператор', 'Менеджер') NOT NULL,
+    role       ENUM ('Кассир', 'Менеджер') NOT NULL,
     PRIMARY KEY (api_key)
 );
 
@@ -47,8 +47,8 @@ CREATE TABLE IF NOT EXISTS card_operation
         'Скидка по карте')         NOT NULL,
     datetime     TIMESTAMP         NOT NULL DEFAULT CURRENT_TIMESTAMP,
     client_id    SMALLINT UNSIGNED NOT NULL,
-    old_value    VARCHAR(30)       NULL DEFAULT '',
-    new_value    VARCHAR(30)       NULL DEFAULT '',
+    old_value    VARCHAR(30)       NULL     DEFAULT '',
+    new_value    VARCHAR(30)       NULL     DEFAULT '',
     user_api_key CHAR(32)          NOT NULL,
     PRIMARY KEY (id),
     FOREIGN KEY (user_api_key)
@@ -73,3 +73,20 @@ CREATE TABLE IF NOT EXISTS holiday
 
 INSERT INTO user(api_key, first_name, last_name, role) VALUE ('7828a24b71c7d916ba97b267730ab57a', 'Валерия', 'Чернякова', 1);
 INSERT INTO user(api_key, first_name, last_name, role) VALUE ('9828a24b71c7d916ba97b267730ab57a', 'Сергей', 'Поляков', 2);
+
+INSERT INTO holiday (name, date)
+VALUES ('Новый год', '2019-01-01');
+INSERT INTO holiday (name, date)
+VALUES ('Рождество', '2019-01-07');
+INSERT INTO holiday (name, date)
+VALUES ('День защитника отечества', '2019-02-23');
+INSERT INTO holiday (name, date)
+VALUES ('Международный женский день', '2019-03-08');
+INSERT INTO holiday (name, date)
+VALUES ('День солидарности трудящихся', '2019-05-01');
+INSERT INTO holiday (name, date)
+VALUES ('День победы', '2019-05-09');
+INSERT INTO holiday (name, date)
+VALUES ('День независимости России', '2019-06-12');
+INSERT INTO holiday (name, date)
+VALUES ('День народного единства', '2019-11-04');

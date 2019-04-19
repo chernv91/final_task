@@ -22,7 +22,6 @@ class CalculatorApi extends Api
 
             if ($purchaseSum > $sum) {
                 $bonuses = $bonus;
-                file_put_contents('15.txt', "$purchaseSum $sum $bonuses");
                 break;
             }
 
