@@ -616,6 +616,19 @@ $(document).ready(function () {
                                 }
                             });
                         });
+
+                        $('#discount_sum').click(function () {
+                            $.ajax({
+                                url    : 'http://charlie.rarus-crimea.ru/api/card_operations/discount_sum',
+                                //dataType: 'json',
+                                success: function (data) {
+                                    $('#discount_sum_res').val(data);
+                                },
+                                error  : function (data) {
+                                    alert(data.responseJSON.code + ' - ' + data.responseJSON.message);
+                                }
+                            });
+                        });
                     },
                     error      : function (data) {
                         alert(data.responseJSON.code + ' - ' + data.responseJSON.message);
