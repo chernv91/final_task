@@ -16,7 +16,7 @@ $(document).ready(function () {
                 let role = data.role;
                 $('#user_api_key').val(apiKey);
                 $('#authorization').hide();
-                if ('Оператор' === role) {
+                if ('Кассир' === role) {
                     $('#for_operator').show();
                 } else {
                     $('#for_operator, #for_manager').show();
