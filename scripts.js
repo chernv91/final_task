@@ -52,6 +52,7 @@ $(document).ready(function () {
                             $('#find #discount').hide();
                             $('#find #discount').prev().hide();
                             $('#discount_operations').hide();
+                            $('#use_discount').hide();
                         }
 
                         if ('Номер телефона' === cardNumberType) {
@@ -159,9 +160,9 @@ $(document).ready(function () {
                                 let purchaseSum = $('#sale #purchase_sum').val();
                                 $.ajax({
                                     url    : 'http://charlie.rarus-crimea.ru/api/calculators/max_possible_bonuses_sum/' + purchaseSum,
-                                    //dataType: 'json',
+                                    dataType: 'json',
                                     success: function (data) {
-                                        $('#max_possible_sum').text(data);
+                                        $('#max_possible_sum').text(data.maxSum);
                                     },
                                     error  : function (data) {
                                         alert(data.responseJSON.code + ' - ' + data.responseJSON.message);
