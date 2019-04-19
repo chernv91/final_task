@@ -8,8 +8,14 @@ class CardOperationApi extends Api
     {
         $operation = $this->requestUri[2];
 
-        if ('subtracted_bonuses_sum' === $operation || 'card_bonuses_sum' === $operation) {
-            $name = $operation === 'subtracted_bonuses_sum' ? 'Списание бонусов' : 'Начисление бонусов';
+        if ('subtracted_bonuses_sum' === $operation || 'card_bonuses_sum' === $operation || 'discount_sum' === $operation) {
+            if ($operation === 'subtracted_bonuses_sum') {
+                $name = 'Списание бонусов';
+            } elseif ($operation === 'card_bonuses_sum') {
+                $name = 'Начисление бонусов';
+            } else {
+                $name = 'Скидка по карте';
+            }
             $sql = "SELECT SUM(new_value) AS sum_bonuses FROM card_operation WHERE name = '$name'";
             $data = $this->db->prepare($sql);
 
