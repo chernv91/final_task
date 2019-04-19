@@ -6,32 +6,6 @@ require_once 'CardOperationApi.php';
 
 class CalculatorApi extends Api
 {
-    //protected $sumBonus;
-
-    public function createPurchase($operation, $id, $purchaseSum, $bonus_balance, $total_sum, $subtracted_bonuses)
-    {
-        $client = new ClientApi();
-        $cardOperation = new CardOperationApi();
-        if ('discount' === $this->loyaltyProgram) {
-            $params = ['total_sum' => $total_sum];
-        } elseif ('bonus_type1' === $this->loyaltyProgram) {
-            $params = ['bonus_balance' => $bonus_balance, 'total_sum' => $total_sum];
-        } else {
-            $bonus_balance = $this->getBonuses($operation, $purchaseSum, $id);
-            $total_sum = $this->getTotalSum($purchaseSum, $id);
-            $params = ['bonus_balance' => $bonus_balance, 'total_sum' => $total_sum];
-        }
-
-        $client->updateClient($id, $params);
-        //рег-я оборота по карте
-        $cardOperation->createCardOperation(4, $id, $user_api_key = '5550d565b6f28a76f1c94ff87e8d9cd9');
-        if ('subrtact_bonuses' === $operation) {
-            $cardOperation->createCardOperation(1, $id, $user_api_key = '5550d565b6f28a76f1c94ff87e8d9cd9');
-        } elseif ('add_bonuses' === $operation) {
-            $cardOperation->createCardOperation(2, $id, $user_api_key = '5550d565b6f28a76f1c94ff87e8d9cd9');
-        }
-    }
-
     public function getBonuses()
     {
         $purchaseSum = array_pop($this->requestUri);
@@ -40,43 +14,24 @@ class CalculatorApi extends Api
         return $this->calculateBonuses($id, $purchaseSum);
     }
 
-    protected function calculateBonuses(
-        string $operation,
-        float $purchaseSum,
-        float $subtractedBonuses,
-        int $id
-    ): string {
+    protected function calculateBonuses(float $purchaseSum, int $id): string
+    {
         $bonuses = 0;
 
-        if ('subrtact_bonuses' === $operation) {
-            $sql = "SELECT bonus_balance FROM client WHERE id=:id";
-            $data = $this->db->prepare($sql);
+        foreach ($this->sumBonus as $sum => $bonus) {
 
-            $data->bindParam(':id', $id);
-            try {
-                $data->execute();
-            } catch (PDOException $e) {
-                echo 'Ошибка: ' . $e->getMessage() . "\n";
-                exit();
+            if ($purchaseSum > $sum) {
+                $bonuses = $bonus;
+                break;
             }
 
-            $oldBonusBalance = $data->fetchAll()[0]['bonus_balance'];
-            $bonuses = $oldBonusBalance - $subtractedBonuses;
-        } elseif ('add_bonuses' === $operation) {
+        }
 
-            foreach ($this->sumBonus as $sum => $bonus) {
-                if ($purchaseSum > $sum) {
-                    $bonuses = $bonus;
-                    break;
-                }
-            }
+        $isHoliday = $this->checkIsHoliday();
+        $isBirthday = $this->checkIsBirthday($id);
 
-            $isHoliday = $this->checkIsHoliday();
-            $isBirthday = $this->checkIsBirthday($id);
-
-            if ($isHoliday || $isBirthday) {
-                $bonuses *= 2;
-            }
+        if ($isHoliday || $isBirthday) {
+            $bonuses *= 2;
         }
 
         return $bonuses;
